@@ -1,115 +1,183 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keycloak/flutter_keycloak.dart';
+import 'package:flutter_keycloak/token_storage.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Keycloak Example',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const FlutterKeycloakExample('Flutter Keycloak Example'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class FlutterKeycloakExample extends StatefulWidget {
   final String title;
 
+  const FlutterKeycloakExample(this.title, {Key? key}) : super(key: key);
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  FlutterKeycloakExampleState createState() => FlutterKeycloakExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class FlutterKeycloakExampleState extends State<FlutterKeycloakExample> {
+  final FlutterKeycloak _flutterKeycloak = FlutterKeycloak();
+  late final TextEditingController _confController;
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _scopeController;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  String _currentPrefs = '';
+  Map? _conf;
+
+  @override
+  void initState() {
+    GetStorage.init();
+    _confController = TextEditingController();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _scopeController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _confController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _scopeController.dispose();
+    super.dispose();
+  }
+
+  void printStorage() {
+    getCredentials().then((credentials) {
+      setState(() {
+        _currentPrefs =
+            '${getConfiguration()}\n\n${getTokens()}\n\n$credentials';
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: _conf != null
+              ? ListView(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _usernameController,
+                            decoration:
+                                const InputDecoration(hintText: 'Username'),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _passwordController,
+                            decoration:
+                                const InputDecoration(hintText: 'Password'),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _scopeController,
+                            decoration:
+                                const InputDecoration(hintText: 'Scope'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _flutterKeycloak.login(
+                          _conf,
+                          _usernameController.text,
+                          _passwordController.text,
+                          scope: _scopeController.text != ''
+                              ? _scopeController.text
+                              : 'offline_access',
+                        );
+                        printStorage();
+                      },
+                      child: const Text('LOGIN'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final userInfo =
+                            await _flutterKeycloak.retrieveUserInfo();
+                        setState(() {
+                          _currentPrefs = userInfo.toString();
+                        });
+                      },
+                      child: const Text('GET USER INFO'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _flutterKeycloak.refreshLogin(
+                          scope: 'offline_access',
+                        );
+                        printStorage();
+                      },
+                      child: const Text('REFRESH LOGIN'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _flutterKeycloak.refreshToken();
+                        printStorage();
+                      },
+                      child: const Text('REFRESH TOKEN'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _flutterKeycloak.logout();
+                        setState(() {
+                          _currentPrefs = '';
+                        });
+                      },
+                      child: const Text('LOGOUT'),
+                    ),
+                    if (_currentPrefs != '') Text(_currentPrefs),
+                  ],
+                )
+              : Column(
+                  children: [
+                    TextFormField(
+                      controller: _confController,
+                      decoration: const InputDecoration(
+                          hintText: 'Type here the config url'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _flutterKeycloak
+                          .getConf(_confController.text)
+                          .then((conf) => setState(() => _conf = conf)),
+                      child: const Text('GET CONF AND PROCEED'),
+                    ),
+                  ],
+                ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
