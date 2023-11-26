@@ -33,8 +33,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'openid_client demo',
-      home: MyHomePage(title: 'openid_client Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      title: 'Free fitness',
+      home: MyHomePage(title: 'Welcome'),
+      
     );
   }
 }
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             if (userInfo != null) ...[
               Text('Hello ${userInfo!.name}'),
@@ -82,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       userInfo = null;
                     });
-                  })
+                  }),
+              
             ],
             if (userInfo == null)
               OutlinedButton(
