@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_fitt_app/WeatherForecast.dart';
+import 'package:my_fitt_app/WeatherPage.dart';
 import 'package:openid_client/openid_client.dart';
 import 'openid_io.dart';
-
+import 'package:http/http.dart' as http;
 const keycloakUri = 'http://localhost:28080/realms/fitness-realm';
 const scopes = ['profile'];
 
@@ -52,6 +55,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   UserInfo? userInfo;
+  List<WeatherForecast>? weatherData;
 
   @override
   void initState() {
@@ -63,6 +67,36 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
     super.initState();
+  }
+
+  Future<void> getWeatherData() async {
+    try {
+      if (credential != null) {
+        var token = await credential!.getTokenResponse();
+        print('Fetching data from: https://10.0.2.2:7202/WeatherForecast');
+        var response = await http.get(
+          Uri.parse('https://10.0.2.2:7202/WeatherForecast'),
+          headers: {'Authorization': 'Bearer ${token.accessToken}'},
+          
+        );
+        print('Response: $response');
+        if (response.statusCode == 200) {
+          // Successfully fetched weather data
+          var decodedData = jsonDecode(response.body);
+          setState(() {
+            weatherData = List<WeatherForecast>.from(
+              decodedData.map((model) => WeatherForecast.fromJson(model)),
+            );
+          });
+        } else {
+          // Handle error
+          print('Failed to fetch weather data: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      // Handle exception
+      print('Error fetching weather data: $e');
+    }
   }
 
   @override
@@ -79,24 +113,38 @@ class _MyHomePageState extends State<MyHomePage> {
               Text('Hello ${userInfo!.name}'),
               Text(userInfo!.email ?? ''),
               OutlinedButton(
-                  child: const Text('Logout'),
-                  onPressed: () async {
-                    setState(() {
-                      userInfo = null;
-                    });
-                  }),
-              
+                child: const Text('Logout'),
+                onPressed: () async {
+                  setState(() {
+                    userInfo = null;
+                  });
+                },
+              ),
+              ...[
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WeatherPage(weatherData: weatherData!),
+                      ),
+                    );
+                  },
+                  child: const Text("Weather"),
+                ),
+              ],
             ],
             if (userInfo == null)
               OutlinedButton(
-                  child: const Text('Login'),
-                  onPressed: () async {
-                    var credential = await authenticate(client, scopes: scopes);
-                    var userInfo = await credential.getUserInfo();
-                    setState(() {
-                      this.userInfo = userInfo;
-                    });
-                  }),
+                child: const Text('Login'),
+                onPressed: () async {
+                  var credential = await authenticate(client, scopes: scopes);
+                  var userInfo = await credential.getUserInfo();
+                  setState(() {
+                    this.userInfo = userInfo;
+                  });
+                },
+              ),
           ],
         ),
       ),
