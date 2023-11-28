@@ -56,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   UserInfo? userInfo;
   List<WeatherForecast>? weatherData;
-
+  
   @override
   void initState() {
     if (credential != null) {
@@ -73,10 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       if (credential != null) {
         var token = await credential!.getTokenResponse();
-        print('Fetching data from: https://10.0.2.2:7202/WeatherForecast');
+        print('Fetching data from: https://10.0.2.2:5258/weatherforecast');
+        print({token.accessToken});
         var response = await http.get(
-          Uri.parse('https://10.0.2.2:7202/WeatherForecast'),
-          headers: {'Authorization': 'Bearer ${token.accessToken}'},
+          Uri.parse('http://10.0.2.2:5258/weatherforecast'),
+          // headers: {'Authorization': 'Bearer ${token.accessToken}'},
           
         );
         print('Response: $response');
@@ -110,8 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             if (userInfo != null) ...[
-              Text('Hello ${userInfo!.name}'),
+              Text('Hello ${userInfo!.name} ${credential!.getUserInfo()}'),
               Text(userInfo!.email ?? ''),
+              
               OutlinedButton(
                 child: const Text('Logout'),
                 onPressed: () async {
@@ -122,16 +124,22 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ...[
                 OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WeatherPage(weatherData: weatherData!),
-                      ),
-                    );
-                  },
-                  child: const Text("Weather"),
-                ),
+  onPressed: () {
+    if (weatherData != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WeatherPage(weatherData: weatherData!),
+        ),
+      );
+    } else {
+      print('Weather data is null.');
+      
+      // Optionally, you can show a message to the user or handle it in another way.
+    }
+  },
+  child: const Text("Weather"),
+),
               ],
             ],
             if (userInfo == null)
