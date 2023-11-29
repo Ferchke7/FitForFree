@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:my_fitt_app/WeatherForecast.dart';
-import 'package:my_fitt_app/WeatherPage.dart';
 import 'package:openid_client/openid_client.dart';
 import 'openid_io.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   UserInfo? userInfo;
-  List<WeatherForecast>? weatherData;
+ 
   
   @override
   void initState() {
@@ -69,36 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Future<void> getWeatherData() async {
-    try {
-      if (credential != null) {
-        var token = await credential!.getTokenResponse();
-        print('Fetching data from: https://10.0.2.2:5258/weatherforecast');
-        print({token.accessToken});
-        var response = await http.get(
-          Uri.parse('http://10.0.2.2:5258/weatherforecast'),
-          // headers: {'Authorization': 'Bearer ${token.accessToken}'},
-          
-        );
-        print('Response: $response');
-        if (response.statusCode == 200) {
-          // Successfully fetched weather data
-          var decodedData = jsonDecode(response.body);
-          setState(() {
-            weatherData = List<WeatherForecast>.from(
-              decodedData.map((model) => WeatherForecast.fromJson(model)),
-            );
-          });
-        } else {
-          // Handle error
-          print('Failed to fetch weather data: ${response.statusCode}');
-        }
-      }
-    } catch (e) {
-      // Handle exception
-      print('Error fetching weather data: $e');
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             if (userInfo != null) ...[
-              Text('Hello ${userInfo!.name} ${credential!.getUserInfo()}'),
+              Text('Hello ${userInfo!.name}}'),
               Text(userInfo!.email ?? ''),
               
               OutlinedButton(
@@ -122,25 +90,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
               ),
-              ...[
-                OutlinedButton(
-  onPressed: () {
-    if (weatherData != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WeatherPage(weatherData: weatherData!),
-        ),
-      );
-    } else {
-      print('Weather data is null.');
-      
-      // Optionally, you can show a message to the user or handle it in another way.
-    }
+              OutlinedButton(
+                onPressed: () async {
+                    
+                      final response = await http.get(
+  Uri.parse('http://10.0.2.2:5258/weatherforecast/Testable'),
+  headers: {
+    'Authorization': 'Bearer ${credential?.idToken}'
   },
-  child: const Text("Weather"),
-),
-              ],
+);
+                      if (response.statusCode == 200) {
+                      final text = response.body;
+                      print(text);
+                  } else {
+                      print('Error: ${response.statusCode}');
+                    }
+                }, 
+                child: const Text("get hello from backend"))
             ],
             if (userInfo == null)
               OutlinedButton(

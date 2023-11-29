@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Backend.Controllers
 {
     [ApiController]
-    [Authorize]
+    
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
@@ -23,6 +24,7 @@ namespace Backend.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            Debug.WriteLine("GetWeatherForecast called");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -31,5 +33,13 @@ namespace Backend.Controllers
             })
             .ToArray();
         }
+        [Authorize]
+        [HttpGet("Testable")]
+        public string GetInfo()
+        {
+            return "just hello";
+        }
+
+        
     }
 }

@@ -66,6 +66,7 @@ builder.Services.AddAuthentication(options =>
             return c.Response.WriteAsync("An error occured processing your authentication.");
         }
     };
+
 });
 
 // Cross-Origin 
@@ -74,8 +75,8 @@ builder.Services
     {
         options.AddPolicy("AllowOrigin",
             builder => builder.WithOrigins("*")
-                              .AllowAnyHeader()
-                              .AllowAnyMethod());
+                      .AllowAnyHeader()
+                      .AllowAnyMethod());
     });
 
 

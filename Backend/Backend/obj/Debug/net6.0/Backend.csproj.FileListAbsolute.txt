@@ -37,3 +37,4 @@ D:\BackendForPet\Backend\Backend\obj\Debug\net6.0\refint\Backend.dll
 D:\BackendForPet\Backend\Backend\obj\Debug\net6.0\Backend.pdb
 D:\BackendForPet\Backend\Backend\obj\Debug\net6.0\Backend.genruntimeconfig.cache
 D:\BackendForPet\Backend\Backend\obj\Debug\net6.0\ref\Backend.dll
+D:\BackendForPet\Backend\Backend\obj\Debug\net6.0\Backend.sourcelink.json
