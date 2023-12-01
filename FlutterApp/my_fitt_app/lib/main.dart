@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_fitt_app/homepage.dart';
 import 'package:openid_client/openid_client.dart';
 import 'openid_io.dart';
 import 'package:http/http.dart' as http;
@@ -66,14 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -92,13 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                    
                       final response = await http.get(
-  Uri.parse('http://10.0.2.2:5258/weatherforecast/Testable'),
-  headers: {
-    'Authorization': 'Bearer ${credential?.idToken}'
-  },
-);
+                           Uri.parse('http://10.0.2.2:5258/weatherforecast/Testable'),
+                          );
                       if (response.statusCode == 200) {
                       final text = response.body;
                       print(text);
@@ -106,7 +98,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       print('Error: ${response.statusCode}');
                     }
                 }, 
-                child: const Text("get hello from backend"))
+                child: const Text("get hello from backend")
+                ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()));
+                }
+              , child: const Text("Data"))
+                
             ],
             if (userInfo == null)
               OutlinedButton(
@@ -120,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
           ],
-        ),
       ),
+    ),
     );
   }
 }

@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Backend.Controllers
 {
     [ApiController]
-    
+    [Authorize]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
