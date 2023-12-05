@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:my_fitt_app/sqlite_service.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class AddRoutine extends StatefulWidget {
+  const AddRoutine({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _AddRoutineState createState() => _AddRoutineState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AddRoutineState extends State<AddRoutine> {
   // All data
   List<Map<String, dynamic>> myData = [];
   final formKey = GlobalKey<FormState>();
@@ -78,6 +78,11 @@ class _HomePageState extends State<HomePage> {
                     validator: formValidator,
                     controller: _descriptionController,
                     decoration: const InputDecoration(hintText: 'Description'),
+                  ),
+                  TextFormField(
+                    controller: _descriptionController,
+                    validator: formValidator,
+                    decoration: const InputDecoration(hintText: 'TEST'),
                   ),
                   const SizedBox(
                     height: 20,

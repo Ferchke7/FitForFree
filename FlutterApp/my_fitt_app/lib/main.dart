@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(userInfo!.email ?? ''),
               
               OutlinedButton(
+                
                 child: const Text('Logout'),
                 onPressed: () async {
                   setState(() {
@@ -104,10 +105,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                    MaterialPageRoute(builder: (context) => const AddRoutine()));
                 }
-              , child: const Text("Data"))
-                
+              , child: const Text("Add routine")),
+                OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddRoutine()));
+                }
+              , child: const Text("Start Routine")),
             ],
             if (userInfo == null)
               OutlinedButton(

@@ -15,14 +15,28 @@ class DatabaseHelper {
   }
 
 static Future<void> createTables(sql.Database database) async {
+  // Check if the 'items' table already exists
+  var tableExists = await _tableExists(database, 'items');
+
+  // If the table does not exist, create it
+  if (!tableExists) {
     await database.execute("""CREATE TABLE items(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         title TEXT,
         description TEXT,
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
-      """);
+    """);
   }
+}
+
+// Helper function to check if a table exists
+static Future<bool> _tableExists(sql.Database database, String tableName) async {
+  var result = await database.rawQuery(
+    "SELECT name FROM sqlite_master WHERE type='table' AND name='$tableName'",
+  );
+  return result.isNotEmpty;
+}
 // id: the id of a item
 // title, description: name and description of  activity
 // created_at: the time that the item was created. It will be automatically handled by SQLite
