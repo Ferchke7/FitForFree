@@ -161,7 +161,8 @@ class _AddRoutineState extends State<AddRoutine> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sqllite CRUD'),
+        backgroundColor: Colors.black,
+        title: const Text('Change training'),
       ),
       body: _isLoading
           ? const Center(
