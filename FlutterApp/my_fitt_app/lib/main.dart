@@ -70,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: AppBar(
+        
         backgroundColor: Colors.black,
         leading: IconButton(
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
@@ -130,7 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) {
-          _currentIndex = index;
+          setState(() {
+            _currentIndex = index;
+          });
+          
         },
        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -145,7 +150,9 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.forum),
             label: 'Forum',
           ),
-        ],),
+        ],
+        
+        ),
     );
   }
 

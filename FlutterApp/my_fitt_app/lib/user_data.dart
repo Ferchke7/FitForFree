@@ -16,6 +16,7 @@ class UserTraining extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Day> daysOfWeek = Day.values;
     return Scaffold(
+      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Customize your routine by day')),
