@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_fitt_app/homepage.dart';
 import 'package:my_fitt_app/show_routine.dart';
+import 'package:my_fitt_app/training/trainingpage.dart';
 import 'package:my_fitt_app/user_data.dart';
 import 'package:openid_client/openid_client.dart';
 import 'openid_io.dart';
@@ -96,6 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Get Hello from Backend'),
                 ),
                 const PopupMenuItem<String>(
+                  value: 'training',
+                  child: Text('Training'),
+                ),
+                const PopupMenuItem<String>(
                   value: 'add_routine',
                   child: Text('Add Routine'),
                 ),
@@ -130,20 +135,24 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) {
-          _currentIndex = index;
+          setState(() {
+            _currentIndex = index;  
+          });
+          
         },
        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'News',
-          ),
+          
           BottomNavigationBarItem(
             icon: Icon(Icons.forum),
             label: 'Forum',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.line_weight),
+            label: 'Library of trainings',
           ),
         ],),
     );
@@ -167,6 +176,13 @@ class _MyHomePageState extends State<MyHomePage> {
       //     print('Error: ${response.statusCode}');
       //   }
       //   break;
+      case 'training':
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TrainingPage()), // Change to TrainingPage()
+        );
+        break;
+        
       case 'add_routine':
         Navigator.push(
           context,
