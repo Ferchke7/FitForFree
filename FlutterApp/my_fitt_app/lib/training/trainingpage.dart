@@ -51,17 +51,19 @@ class _TrainingPageState extends State<TrainingPage> {
             ),
           ],
           bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(text: 'Monday'),
-              Tab(text: 'Tuesday'),
-              Tab(text: 'Wednesday'),
-              Tab(text: 'Thursday'),
-              Tab(text: 'Friday'),
-              Tab(text: 'Saturday'),
-              Tab(text: 'Sunday'),
-            ],
-          ),
-        ),
+  tabs: <Widget>[
+    Tab(text: 'Monday'),
+    Tab(text: 'Tuesday'),
+    Tab(text: 'Wednesday'),
+    Tab(text: 'Thursday'),
+    Tab(text: 'Friday'),
+    Tab(text: 'Saturday'),
+    Tab(text: 'Sunday'),
+  ],
+  indicatorColor: Colors.black, // Background color of the selected tab
+  labelColor: Colors.deepOrange, // Color of the selected tab text
+  unselectedLabelColor: Colors.white, // Color of the unselected tab text
+      ),),
         body: TabBarView(
           children: List.generate(7, (index) => _buildTab(index)),
         ),
