@@ -15,6 +15,7 @@ class TrainingDatabaseHelper {
 
 static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE trainings(
+        
         userId String PRIMARY KEY,
         activityName String,
         repNumber INT,
