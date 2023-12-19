@@ -18,7 +18,7 @@ late final Client client;
 
 Future<Client> getClient() async {
   var uri = Uri.parse(keycloakUri);
-  if (!kIsWeb && Platform.isAndroid) uri = uri.replace(host: '10.0.2.2');
+  if (!kIsWeb && Platform.isAndroid) uri = uri.replace(host: '10.0.2.2'); //10.0.2.2
   var clientId = 'flutter-app-client';
 
   var issuer = await Issuer.discover(uri);

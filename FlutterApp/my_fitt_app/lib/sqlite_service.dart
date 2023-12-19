@@ -15,7 +15,7 @@ class DatabaseHelper {
   }
 
 static Future<void> createTables(sql.Database database) async {
-    await database.execute("""CREATE TABLE items(
+    await database.execute("""CREATE TABLE IF NOT EXISTS items(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         title TEXT,
         description TEXT,

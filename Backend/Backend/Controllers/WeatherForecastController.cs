@@ -33,7 +33,7 @@ namespace Backend.Controllers
             })
             .ToArray();
         }
-        [Authorize]
+        
         [HttpGet("Testable")]
         public string GetInfo()
         {
