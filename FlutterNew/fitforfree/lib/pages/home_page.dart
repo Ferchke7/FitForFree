@@ -6,7 +6,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(client.auth.currentUser?.email);
+    
     return Center(
       
       child: Column(
@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
           OutlinedButton(onPressed: () {
             client.auth.signOut();
           }, 
-          child: const Text('sign-put'))
+          child: const Text('sign-out'))
         ],
       ),
     );
