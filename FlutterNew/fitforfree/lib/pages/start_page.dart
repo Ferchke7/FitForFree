@@ -27,7 +27,20 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ShareRizzOut'),
+        title: const Text("ShareFitzz",
+        style: TextStyle(color: Colors.white),),
+        
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 40.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        elevation: 0.00,
+        backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +49,7 @@ class _StartPageState extends State<StartPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: [              
               // Email
               TextFormField(
                 validator: (value) {

@@ -59,7 +59,7 @@ class _MyWidgetState extends State<MyWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _user == null ? const StartPage() 
-      : HomePage(),
+      : const HomePage(),
     );
   }
 
