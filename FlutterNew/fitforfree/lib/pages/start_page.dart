@@ -26,23 +26,13 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("ShareFitzz",
-        style: TextStyle(color: Colors.white),),
-        
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 40.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
+      
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/sports.jpeg"),
+            fit: BoxFit.cover)
         ),
-        elevation: 0.00,
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -61,6 +51,7 @@ class _StartPageState extends State<StartPage> {
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
+                  border: OutlineInputBorder()
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -76,6 +67,7 @@ class _StartPageState extends State<StartPage> {
                 controller: _passwordController,
                 decoration: const InputDecoration(
                   labelText: 'Password',
+                  border: OutlineInputBorder()
                 ),
                 obscureText: true,
               ),
@@ -91,6 +83,7 @@ class _StartPageState extends State<StartPage> {
                     style: TextStyle(
                       color: Colors.black, 
                       decoration: TextDecoration.underline,
+                      
                     ),
                   ),
                 ),

@@ -57,8 +57,46 @@ class _BottomMainNavigatorState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+    centerTitle: true,
+    actions: [
+      IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Do you want to Log out?"),
+                content: const SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text("Do you want to sign-out?")
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      // Perform logout action here
+                      client.auth.signOut();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Yes'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('No'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        icon: const Icon(Icons.logout_outlined),
       ),
+      ],
+    ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -80,14 +118,17 @@ class _BottomMainNavigatorState
             backgroundColor: Colors.blueAccent,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.perm_device_information),
             label: 'Settings',
-            backgroundColor: Colors.pink,
+            backgroundColor: Colors.brown,
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
+      ),
+      drawer: Drawer(
+        child: Text("sometext"),
       ),
     );
   }
