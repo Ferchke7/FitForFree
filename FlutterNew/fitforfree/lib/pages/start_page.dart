@@ -30,7 +30,7 @@ class _StartPageState extends State<StartPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/sports.jpeg"),
+            image: AssetImage("assets/mainTemp.jpeg"),
             fit: BoxFit.cover)
         ),
         padding: const EdgeInsets.all(16.0),
@@ -51,7 +51,10 @@ class _StartPageState extends State<StartPage> {
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder()
+                  
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -67,6 +70,8 @@ class _StartPageState extends State<StartPage> {
                 controller: _passwordController,
                 decoration: const InputDecoration(
                   labelText: 'Password',
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder()
                 ),
                 obscureText: true,
@@ -81,7 +86,7 @@ class _StartPageState extends State<StartPage> {
                   child: const Text(
                     'Forgot Password?',
                     style: TextStyle(
-                      color: Colors.black, 
+                      color: Colors.white, 
                       decoration: TextDecoration.underline,
                       
                     ),
@@ -89,10 +94,16 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
               // Sign In Button
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 25.0),
               _signInLoading
                   ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)
+                        ),
+                        backgroundColor: Colors.black
+                      ),
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();
                         if (isValid != true) {
@@ -119,13 +130,23 @@ class _StartPageState extends State<StartPage> {
                           });
                         }
                       },
-                      child: const Text('Sign In'),
+
+                      child: const Text('Sign In',
+                      style: TextStyle(
+                        color: Colors.white
+                      ),),
                     ),
               // Sign Up Button
               const SizedBox(height: 16.0),
               _signUpLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : OutlinedButton(
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0)
+                          
+                        ), backgroundColor: Colors.black
+                      ),
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();
                         if (isValid != true) {
@@ -158,7 +179,10 @@ class _StartPageState extends State<StartPage> {
                           });
                         }
                       },
-                      child: const Text('Sign Up'),
+                      child: const Text('Sign Up',
+                      style: TextStyle(
+                        color: Colors.white
+                      ),),
                     ),
             ],
           ),
