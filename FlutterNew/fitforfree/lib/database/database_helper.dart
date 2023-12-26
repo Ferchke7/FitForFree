@@ -28,7 +28,7 @@ class DatabaseHelper {
 
   Future<void> _createDatabase(Database db, int version) async {
   await db.execute('''
-    CREATE TABLE user(
+    CREATE TABLE IF NOT EXISTS user(
       email TEXT PRIMARY KEY
     )
   ''');
@@ -59,7 +59,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert('routine', routine.toMap());
   }
-
+  
   // READ
   Future<List<User>> getAllUsers() async {
     Database db = await instance.database;

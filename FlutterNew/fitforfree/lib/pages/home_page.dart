@@ -1,4 +1,5 @@
 
+import 'package:fitforfree/pages/new_list.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     //String? email = client.auth.currentUser?.email.toString();
     //String emailTemp = email.toString();
-
+    client.auth.currentSession?.accessToken;
     return const BottomMainNavigator();
   }
 }
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
 
 class BottomMainNavigator extends StatefulWidget {
   const BottomMainNavigator({super.key});
-
+  
   @override
   State<BottomMainNavigator> createState() =>
       _BottomMainNavigatorState();
@@ -33,10 +34,7 @@ class _BottomMainNavigatorState
       'Index 0: Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+    NewsList(),
     Text(
       'Index 2: School',
       style: optionStyle,
@@ -108,12 +106,12 @@ class _BottomMainNavigatorState
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.route_outlined),
+            label: 'My Routine',
             backgroundColor: Colors.indigo,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+            icon: Icon(Icons.forum),
             label: 'School',
             backgroundColor: Colors.blueAccent,
           ),
@@ -128,8 +126,14 @@ class _BottomMainNavigatorState
         onTap: _onItemTapped,
       ),
       drawer: Drawer(
-        child: Text("sometext"),
-      ),
+        child: ListView(
+          children: const <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("Ferdavs"), 
+              accountEmail: Text("Email"),)
+          ],
+        ),
+      )
     );
   }
 }

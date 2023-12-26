@@ -81,7 +81,7 @@ class _StartPageState extends State<StartPage> {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordRecoveryScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordRecoveryScreen()));
                   },
                   child: const Text(
                     'Forgot Password?',
