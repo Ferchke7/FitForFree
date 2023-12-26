@@ -1,5 +1,8 @@
 
-import 'package:fitforfree/pages/new_list.dart';
+
+import 'package:fitforfree/services/add_routines.dart';
+import 'package:fitforfree/services/new_list.dart';
+import 'package:fitforfree/services/user_api.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
@@ -34,11 +37,8 @@ class _BottomMainNavigatorState
       'Index 0: Home',
       style: optionStyle,
     ),
+    AddRoutines(),
     NewsList(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
     Text(
       'Index 3: Settings',
       style: optionStyle,
@@ -126,13 +126,19 @@ class _BottomMainNavigatorState
         onTap: _onItemTapped,
       ),
       drawer: Drawer(
+                
         child: ListView(
+          
           children: const <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("Ferdavs"), 
-              accountEmail: Text("Email"),)
+            UserInformation(),            
+            ListTile(
+              title: Text('Change your information')
+            ),
+
           ],
+          
         ),
+        
       )
     );
   }
