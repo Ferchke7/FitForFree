@@ -1,6 +1,9 @@
 import 'package:fitforfree/database/database_helper.dart';
 import 'package:fitforfree/models/Routine.dart';
-import 'package:fitforfree/services/dropmenu_routines.dart';
+import 'package:fitforfree/services/edit_routines_service.dart';
+
+
+
 import 'package:flutter/material.dart';
 
 class AddRoutines extends StatefulWidget {
@@ -11,15 +14,15 @@ class AddRoutines extends StatefulWidget {
 }
 
 class _AddRoutinesState extends State<AddRoutines> {
-  DatabaseHelper _databaseHelper = DatabaseHelper();
-  TextEditingController nameOfRoutine = new TextEditingController();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+  TextEditingController nameOfRoutine = TextEditingController();
 
   Future showDialogAdding() {
     return showDialog(
       context: context, 
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Input data"),
+          title: const Text("Add Routine"),
           content: TextField(
             controller: nameOfRoutine,
             decoration: const InputDecoration(
@@ -30,20 +33,22 @@ class _AddRoutinesState extends State<AddRoutines> {
             MaterialButton(
               color: Colors.blue,
               textColor: Colors.white,
-              child: Text("Add"),
+              child: const Text("Add"),
               onPressed: () async {
                 String tempText = nameOfRoutine.text;
                 Routine routine = Routine(name: tempText);
                 await _databaseHelper.insertRoutine(routine);
-                Navigator.pop(context);
-                refreshPage();
                 
+                refreshPage();
+                setState(() {
+                  Navigator.pop(context);
+                });
               }
               ),
             MaterialButton(
               color: Colors.black,
               textColor: Colors.white,
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed:(){
                 setState(() {
                   Navigator.pop(context);
@@ -78,7 +83,7 @@ class _AddRoutinesState extends State<AddRoutines> {
                   child: ListTile(
                     title: Text(routines[index].name),
                     trailing: PopupMenuButton<String>(
-                      onSelected: (value) => _handleMenuClick(value),
+                      onSelected: (value) => _handleMenuClick(value,routines[index].id),
                       itemBuilder: (BuildContext context) {
                         return ['edit','delete'].map((String option) {
                           return PopupMenuItem(
@@ -96,11 +101,13 @@ class _AddRoutinesState extends State<AddRoutines> {
       ),
       
       floatingActionButton: Column(
+        
         mainAxisAlignment: MainAxisAlignment.end,
         
         children: [
+          
           FloatingActionButton(
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () async {
               showDialogAdding();
               setState(() {
@@ -108,30 +115,25 @@ class _AddRoutinesState extends State<AddRoutines> {
               });
               
             }),
-          FloatingActionButton(
-            
-            child: const Icon(Icons.delete),
-            
-            onPressed: ()
-          {
-            _databaseHelper.deleteAllRoutines();
-            Navigator.pop(context);
-          }),
-          
         ],
       )
     );
   }
 
-  void _handleMenuClick(String value) {
+  void _handleMenuClick(String value,int? id) {
     if (value == 'edit') {
-      
+      Navigator.push(context,
+      MaterialPageRoute(builder: (context) => EditRoutine(id: id)));
     }
     else if (value == 'delete') {
-
+      _databaseHelper.deleteRoutine(id!);
+      refreshPage();
     }
   }
   void refreshPage() {
-  setState(() {});
+  setState(() {
+    
+  });
 }
+  
 }
