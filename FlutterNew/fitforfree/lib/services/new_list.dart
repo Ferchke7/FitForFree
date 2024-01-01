@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fitforfree/models/post.dart';
+import 'package:fitforfree/services/add_post.dart';
+import 'package:fitforfree/services/read_post.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,25 +16,24 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
-  late Future<List<Map<String, dynamic>>> _newsList;
+  late Future<List<Post>> _postList;
 
   @override
   void initState() {
     super.initState();
-    _newsList = fetchNewsList();
+    _postList = fetchPostList();
   }
 
-  Future<List<Map<String, dynamic>>> fetchNewsList() async {
+  Future<List<Post>> fetchPostList() async {
     try {
       final accessToken = client.auth.currentSession?.accessToken;
       print(accessToken);
       if (accessToken == null) {
-        // Handle the case where the access token is not available
         throw Exception('Access token is null.');
       }
 
       final response = await http.get(
-        Uri.parse('http://192.227.152.231:3333/ForumView'),
+        Uri.parse('http://192.227.152.231:3333/Blog/getallpostwithcomments'),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.authorizationHeader: "Bearer $accessToken"
@@ -40,39 +42,95 @@ class _NewsListState extends State<NewsList> {
 
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        return List<Map<String, dynamic>>.from(data);
+        List<Post> postList = data.map((item) => Post.fromJson(item)).toList();
+        return postList;
       } else {
-        throw Exception('Failed to load news');
+        throw Exception('Failed to load posts');
       }
     } catch (e) {
-      // Handle any errors that occurred during the request
-      print('Error fetching news: $e');
-      throw Exception('Failed to load news');
+      print('Error fetching posts: $e');
+      throw Exception('Failed to load posts');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _newsList,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          List<Map<String, dynamic>> newsList = snapshot.data!;
-          return ListView.builder(
-            itemCount: newsList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(newsList[index]['newsText']),
-                subtitle: Text('Created by: ${newsList[index]['createdBy']}'),
-              );
-            },
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+           child: Text('Forum')
+        ),
+        shadowColor: Colors.black,
+      ),
+      body: FutureBuilder<List<Post>>(
+        future: _postList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LinearProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            List<Post> postList = snapshot.data!;
+            return ListView.builder(
+              itemCount: postList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: (){
+                      Navigator.push
+                      (context, MaterialPageRoute(builder: (context) 
+                      {return const ReadPost();},
+                      settings: RouteSettings(arguments: {'postList': postList[index]}
+                      ),
+                      ),
+                      );
+                  },
+                child: Card(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      ListTile(
+                        
+                        title: Text(postList[index].titleName),
+                        subtitle: Text(
+                          'Created by: ${postList[index].author}\n${postList[index].likes}\n${postList[index].description}',
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          TextButton(
+                            child: Icon(Icons.favorite),
+                            onPressed: () {/* ... */},
+                          ),
+                          const SizedBox(width: 1),
+                          TextButton(
+                            child: Text("comments: ${postList[index].postsComments.length}"),
+                            onPressed: () {/* ... */},
+                          ),
+                          const SizedBox(width: 3),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                );
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("FloatingActionButton Pressed"); // Add this line
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddPost()),
+                );
+            
+          },
+          
+        child: const Icon(Icons.add_box_outlined),
+      ),
     );
   }
 }

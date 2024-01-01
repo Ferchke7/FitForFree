@@ -45,12 +45,12 @@ class _UserInformationState extends State<UserInformation> {
       future: _userInfo,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Replace with your loading indicator
+          return LinearProgressIndicator(); // Replace with your loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           final userInfo = snapshot.data!;
-        
+      
           return UserAccountsDrawerHeader(
             
             accountName: Text(userInfo.name),

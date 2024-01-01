@@ -101,7 +101,7 @@ class _BottomMainNavigatorState
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_filled),
             label: 'Home',
             backgroundColor: Colors.black,
           ),
@@ -112,7 +112,7 @@ class _BottomMainNavigatorState
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.forum),
-            label: 'School',
+            label: 'Forum',
             backgroundColor: Colors.blueAccent,
           ),
           BottomNavigationBarItem(

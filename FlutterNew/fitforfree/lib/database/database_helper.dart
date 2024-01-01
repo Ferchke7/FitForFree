@@ -1,4 +1,4 @@
-import 'package:fitforfree/models/Routine.dart';
+import 'package:fitforfree/models/routine.dart';
 import 'package:fitforfree/models/weeks_routine.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';

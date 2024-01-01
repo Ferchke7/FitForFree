@@ -45,6 +45,8 @@ dependencies:
   motion_tab_bar_v2: ^0.3.0
   http: ^1.1.2
   accordion: ^2.6.0
+  comment_box: ^0.0.18
+
   
 
 dev_dependencies:

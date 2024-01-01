@@ -1,5 +1,5 @@
 import 'package:fitforfree/database/database_helper.dart';
-import 'package:fitforfree/models/Routine.dart';
+import 'package:fitforfree/models/routine.dart';
 import 'package:fitforfree/services/edit_routines_service.dart';
 
 
