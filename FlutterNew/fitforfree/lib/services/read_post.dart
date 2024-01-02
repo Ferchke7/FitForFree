@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 class ReadPost extends StatefulWidget {
   const ReadPost({super.key});
-
   @override
   State<ReadPost> createState() => _ReadPostState();
 }
@@ -62,7 +61,7 @@ class _ReadPostState extends State<ReadPost> {
 
 
   ///We need to refresh this page
-  Future<List<Post>> fetchPostList() async {
+  Future<List<dynamic>> fetchPostList(int postId) async {
     try {
       final accessToken = client.auth.currentSession?.accessToken;
       print(accessToken);
@@ -71,17 +70,19 @@ class _ReadPostState extends State<ReadPost> {
       }
 
       final response = await http.get(
-        Uri.parse('http://192.227.152.231:3333/Blog/GetPostComments'),
-        headers: {
+      Uri.parse('http://192.227.152.231:3333/Blog/GetPostByID?postId=$postId'),        
+      headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.authorizationHeader: "Bearer $accessToken"
         },
+        
+        
       );
 
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        List<Post> postList = data.map((item) => Post.fromJson(item)).toList();
-        return postList;
+        return data;
+        
       } else {
         throw Exception('Failed to load posts');
       }
@@ -107,10 +108,11 @@ class _ReadPostState extends State<ReadPost> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Container(
+                    padding: const EdgeInsets.all(15.0),
+                    
                     child: Text(
-                      "${post.titleName}\n${post.description}",
+                      "${post.description}",
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         fontSize: 18,
@@ -173,8 +175,9 @@ class _ReadPostState extends State<ReadPost> {
                 ElevatedButton(
                   onPressed: _isPosted
                       ? null
-                      : () {
-                          postData(post.id);
+                      : () async {
+                          await postData(post.id);
+                          
                         },
                   child: _isPosted
                       ? CircularProgressIndicator()

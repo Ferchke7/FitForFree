@@ -8,7 +8,7 @@ class Post {
   final String description;
   final DateTime createDate;
   final DateTime updateDate;
-  final List<dynamic> postsComments;
+  late final List<dynamic> postsComments;
 
   Post({
     required this.id,
