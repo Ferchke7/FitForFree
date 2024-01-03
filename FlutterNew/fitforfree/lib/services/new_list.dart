@@ -99,15 +99,17 @@ class _NewsListState extends State<NewsList> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           TextButton(
-                            child: Icon(Icons.favorite),
-                            onPressed: () {/* ... */},
-                          ),
-                          const SizedBox(width: 1),
+                            child: Text("♥  ${postList[index].likes}"),
+                            onPressed: () {
+                              },
+                              
+                          ), 
+                          const SizedBox(width: 3,height: 10,),
                           TextButton(
                             child: Text("comments: ${postList[index].postsComments.length}"),
                             onPressed: () {/* ... */},
                           ),
-                          const SizedBox(width: 3),
+                          const SizedBox(width: 3, height: 10,),
                         ],
                       ),
                     ],
@@ -120,13 +122,16 @@ class _NewsListState extends State<NewsList> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("FloatingActionButton Pressed"); // Add this line
-            Navigator.push(
+        onPressed: () async {
+           final result = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AddPost()),
                 );
-            
+           if (result) {
+            setState(() {
+              _postList = fetchPostList();
+            });
+           }
           },
           
         child: const Icon(Icons.add_box_outlined),

@@ -81,13 +81,14 @@ class _AddPostState extends State<AddPost> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                postData();
-                Navigator.pop(context);
+              onPressed: () async {
+                await postData();
+                Navigator.pop(context, true);
                 ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
+                              duration: Duration(seconds: 1),
                               content: Text('Posted ^_^'),
-                              backgroundColor: Color.fromARGB(255, 76, 127, 175),
+                              backgroundColor: Color.fromARGB(255, 4, 213, 77),
                               
                             ),
                 );

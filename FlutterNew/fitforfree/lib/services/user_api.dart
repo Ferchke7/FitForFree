@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class UserInformation extends StatefulWidget {
-  const UserInformation({Key? key}) : super(key: key);
+  const UserInformation({super.key});
 
   @override
   State<UserInformation> createState() => _UserInformationState();
@@ -45,7 +45,7 @@ class _UserInformationState extends State<UserInformation> {
       future: _userInfo,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LinearProgressIndicator(); // Replace with your loading indicator
+          return const LinearProgressIndicator(); // Replace with your loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

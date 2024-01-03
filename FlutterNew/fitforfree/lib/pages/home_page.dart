@@ -1,20 +1,48 @@
-
-
-import 'package:fitforfree/services/add_routines.dart';
+import 'package:fitforfree/database/sqlite_service.dart';
+import 'package:fitforfree/models/user.dart';
+import 'package:fitforfree/pages/records_page.dart';
 import 'package:fitforfree/services/new_list.dart';
 import 'package:fitforfree/services/user_api.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
   
   @override
   Widget build(BuildContext context) {
     //String? email = client.auth.currentUser?.email.toString();
     //String emailTemp = email.toString();
+    _initUser();
     client.auth.currentSession?.accessToken;
     return const BottomMainNavigator();
+  }
+}
+
+void _initUser() async {
+  String? email = client.auth.currentUser?.email;
+  String username = email?.split('@')[0] ?? '';
+
+  UserService userService = UserService();
+
+  User? existingUser = await userService.getUserByUsername(username);
+
+  if(existingUser == null) {
+    User initialize = User(
+      username: username,
+      creationDate: DateTime.now().toString(),
+    );
+    await userService.insertUser(initialize);
+    User? tempUser = await userService.getUserByUsername(username);
+    userId = tempUser!.id!;
+    username = tempUser.username!;
+    print("SUCC ADDED");
+  }
+  else {
+    var temp = existingUser.username;
+    userId = existingUser.id!;
+    username = existingUser.username!;
+    print("ALREADY $temp");
   }
 }
 
@@ -27,8 +55,12 @@ class BottomMainNavigator extends StatefulWidget {
       _BottomMainNavigatorState();
 }
 
-class _BottomMainNavigatorState
-    extends State<BottomMainNavigator> {
+class _BottomMainNavigatorState extends State<BottomMainNavigator> {
+  UserService userService = UserService();
+  String? tempName = client.auth.currentUser?.email?.split('@')[0];
+  
+
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -37,7 +69,7 @@ class _BottomMainNavigatorState
       'Index 0: Factory',
       style: optionStyle,
     ),
-    AddRoutines(),
+    AddRecords(),
     NewsList(),
     Text(
       'Index 3: Settings',
