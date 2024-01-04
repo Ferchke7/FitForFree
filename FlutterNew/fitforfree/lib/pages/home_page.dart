@@ -35,13 +35,13 @@ void _initUser() async {
     await userService.insertUser(initialize);
     User? tempUser = await userService.getUserByUsername(username);
     userId = tempUser!.id!;
-    username = tempUser.username!;
+    my_username = tempUser.username!;
     print("SUCC ADDED");
   }
   else {
     var temp = existingUser.username;
     userId = existingUser.id!;
-    username = existingUser.username!;
+    my_username = temp!;
     print("ALREADY $temp");
   }
 }

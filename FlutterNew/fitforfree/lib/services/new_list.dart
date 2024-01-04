@@ -121,7 +121,8 @@ class _NewsListState extends State<NewsList> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
+        backgroundColor: Color.fromARGB(255, 12, 47, 173),
         onPressed: () async {
            final result = await Navigator.push(
                 context,
@@ -134,7 +135,7 @@ class _NewsListState extends State<NewsList> {
            }
           },
           
-        child: const Icon(Icons.add_box_outlined),
+        child: const Icon(Icons.add_box_outlined, color: Colors.white,),
       ),
     );
   }

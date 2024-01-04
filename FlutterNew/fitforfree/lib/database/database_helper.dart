@@ -46,8 +46,8 @@ Future<void> _createDb(Database db, int version) async {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
       record TEXT,
-      week_name TEXT, -- Add week name column
-      date TEXT, -- Add date column
+      week_name TEXT,
+      date TEXT, 
       FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
     )
   ''');
