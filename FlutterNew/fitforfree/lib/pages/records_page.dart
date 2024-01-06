@@ -1,7 +1,4 @@
-import 'package:accordion/accordion.dart';
-import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
-import 'package:fitforfree/models/exercise.dart';
 import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/edit_routine.dart';
 import 'package:fitforfree/utils/common.dart';
@@ -35,7 +32,7 @@ class _AddRecordsState extends State<AddRecords> {
  
   @override
   Widget build(BuildContext context) {
-    ExerciseService exerciseService = ExerciseService();
+    //ExerciseService exerciseService = ExerciseService();
     return Scaffold(
       appBar: AppBar(
         title: Text("The routine"),
@@ -75,16 +72,7 @@ class _AddRecordsState extends State<AddRecords> {
       FloatingActionButton.small(
         backgroundColor: const Color.fromARGB(255, 24, 6, 97),
         onPressed: () {
-          if (currentUser != null) {
-          print(currentUser.monday.toString());
-          String? tempDay = currentUser.monday;
           
-          currentUser.monday = null;
-          userService.updateUser(currentUser);
-          }
-          else {
-            print("USER NOT BEING INIT");
-          }
           
       },
         child: const Icon(Icons.sync,color: Colors.white,) ),

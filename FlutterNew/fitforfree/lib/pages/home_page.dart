@@ -1,5 +1,6 @@
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/user.dart';
+import 'package:fitforfree/pages/homer.dart';
 import 'package:fitforfree/pages/records_page.dart';
 import 'package:fitforfree/services/new_list.dart';
 import 'package:fitforfree/services/user_api.dart';
@@ -65,16 +66,15 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Factory',
-      style: optionStyle,
-    ),
+    HomerPage(),
+    //Text("TEMP"),
     AddRecords(),
     NewsList(),
     Text(
       'Index 3: Settings',
       style: optionStyle,
     ),
+    
   ];
 
   void _onItemTapped(int index) {
@@ -145,12 +145,13 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
           BottomNavigationBarItem(
             icon: Icon(Icons.forum),
             label: 'Forum',
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:  Colors.black,
           ),
+          
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_device_information),
-            label: 'Settings',
-            backgroundColor: Colors.brown,
+            icon: Icon(Icons.library_books),
+            label: 'Routine library',
+            backgroundColor: Colors.indigo,
           ),
         ],
         currentIndex: _selectedIndex,

@@ -1,12 +1,12 @@
 class Records {
-  final int id;
+  final int? id;
   final int userId; // Foreign key reference to the User table
   final String record;
   final String weekName; // Add week name field
   final String date; // Add date field
 
   Records({
-    required this.id,
+    this.id,
     required this.userId,
     required this.record,
     required this.weekName,

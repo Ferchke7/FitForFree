@@ -46,6 +46,7 @@ dependencies:
   http: ^1.1.2
   accordion: ^2.6.0
   comment_box: ^0.0.18
+  smooth_page_indicator: ^1.1.0
 
   
 

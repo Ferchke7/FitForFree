@@ -140,13 +140,15 @@ class _ReadPostState extends State<ReadPost> {
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
                       child: ListTile(
-                        
+                        shape: const RoundedRectangleBorder(borderRadius: 
+                        BorderRadius.only(topRight: Radius.circular(32),
+                        bottomRight: Radius.circular(32))),
                         leading: GestureDetector(
                           onTap: () async {
                             print("Comment Tapped");
                           },
                           child: Container(
-                            height: 20.0,
+                            height: 30.0,
                             width: 20.0,
                             decoration: const BoxDecoration(
                               color: Colors.blue,
