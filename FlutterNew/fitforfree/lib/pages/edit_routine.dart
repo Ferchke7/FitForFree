@@ -264,7 +264,11 @@ class _EditRoutineState extends State<EditRoutine> {
       },
     );
   }
-
+  void refresh() {
+    setState(() {
+      
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -291,13 +295,24 @@ class _EditRoutineState extends State<EditRoutine> {
                         DataCell(
                           const Icon(Icons.edit_note),
                           onTap: () {
-                            print("tapped");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Sorry but this is not implemented yet, but you can delete it if you want ^^'),
+                              backgroundColor: Colors.redAccent,
+                              duration: const Duration(seconds: 1),
+                            )
+                            );
                           },
                         ),
                         DataCell(
                           Icon(Icons.delete),
-                          onTap: () {
-                            print("DELETE");
+                          onTap: () async {
+                            List<Exercise> currentList = await exerlist;
+                            exerciseService.deleteExercise(currentList, e.name);
+                            updateExercise(currentList);
+                            setState(() {
+                              refresh();
+                            });
                           },
                         ),
                       ],

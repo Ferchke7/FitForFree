@@ -40,10 +40,12 @@ void _initUser() async {
     print("SUCC ADDED");
   }
   else {
+  
     var temp = existingUser.username;
     userId = existingUser.id!;
     my_username = temp!;
     print("ALREADY $temp");
+    print(DateTime.now().toString());
   }
 }
 
@@ -71,7 +73,7 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
     AddRecords(),
     NewsList(),
     Text(
-      'Index 3: Settings',
+      'Construction 🚧',
       style: optionStyle,
     ),
     

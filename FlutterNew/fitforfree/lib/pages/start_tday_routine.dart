@@ -6,7 +6,8 @@ import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 UserService userService = UserService();
 ExerciseService exerciseService = ExerciseService();
-late Future<List<Exercise>> exerlist;
+
+
 class TodayRoutine extends StatefulWidget {
   const TodayRoutine({super.key});
 
@@ -16,17 +17,39 @@ class TodayRoutine extends StatefulWidget {
 
 class _TodayRoutineState extends State<TodayRoutine> {
   List<TextEditingController> controllers = [];
-  
+  late List<Exercise>? exerlist;
+  late Future<List<Exercise>> tempExerList;
   @override
   void initState() {
     super.initState();
-    createControllers(5);
+    tempExerList = getExercise(getWeekDayString());
+    initExerList();
+    
+  }
+  void refresh() {
+    setState(() {
+      
+    });
+  }
+  int getControllerAmount() {
+    int result = 0;
+    for(int i = 0; i < exerlist!.length; i++) {
+      result+= exerlist![i].reps;
+    }
+    return result;
   }
 
   @override dispose() {
     disposeControllers();
     super.dispose();
   }
+
+  Future<void> initExerList() async {
+    exerlist = await tempExerList;
+    createControllers(getControllerAmount());
+    print(getControllerAmount());
+  }
+
   void createControllers(int numberOfControllers) {
     for (int i = 0; i < numberOfControllers; i++) {
       TextEditingController controller = TextEditingController();
@@ -80,6 +103,8 @@ class _TodayRoutineState extends State<TodayRoutine> {
   }
 
   Future<List<Exercise>> getExercise(String dayOfWeek) async {
+    my_username ??= getUser();
+    print(my_username);
     User? currentUser = await userService.getUserByUsername(my_username!);
     var exerciseListTemp;
     switch (dayOfWeek.toLowerCase()) {
@@ -108,6 +133,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
         exerciseListTemp = [];
         break;
     }
+    print(exerciseListTemp.toString());
     return exerciseListTemp;
   }
 
@@ -168,23 +194,44 @@ class _TodayRoutineState extends State<TodayRoutine> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Your today routine"),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: List.generate(controllers.length, (index) {
-          return TextField(
-            controller: controllers[index],
-            decoration: InputDecoration(
-              hintText: my_username,
-
-            ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Your today routine"),
+      centerTitle: true,
+    ),
+    body:SingleChildScrollView(
+      child: 
+    FutureBuilder(
+      future: initExerList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Column(
+            children: <Widget>[
+              Column(
+                children: List.generate(controllers.length, (index) {
+                  return TextField(
+                    controller: controllers[index],
+                    decoration: InputDecoration(
+                      hintText: "LOL THIS: ${exerlist?[0].reps ?? 'n/a'}",
+                    ),
+                    onTap: () {
+                      print("LOLOLOL");
+                      print(getWeekDayString());
+                    },
+                  );
+                }),
+              ),
+            ],
           );
-        }),
-      ),
-    );
-  }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    ),
+  ),
+  );
+}
 }
