@@ -92,7 +92,7 @@ class _NewsListState extends State<NewsList> {
                         
                         title: Text(postList[index].titleName),
                         subtitle: Text(
-                          'Created by: ${postList[index].author}\n${postList[index].likes}\n${postList[index].description}',
+                          'Created by: ${postList[index].author}\n\n${postList[index].description}...',
                         ),
                       ),
                       Row(

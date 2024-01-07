@@ -1,3 +1,4 @@
+import 'package:accordion/accordion.dart';
 import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/exercise.dart';
@@ -208,18 +209,13 @@ Widget build(BuildContext context) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Column(
             children: <Widget>[
+              Text("Some"),
               Column(
-                children: List.generate(controllers.length, (index) {
-                  return TextField(
-                    controller: controllers[index],
-                    decoration: InputDecoration(
-                      hintText: "LOL THIS: ${exerlist?[0].reps ?? 'n/a'}",
-                    ),
-                    onTap: () {
-                      print("LOLOLOL");
-                      print(getWeekDayString());
-                    },
-                  );
+                children: List.generate(exerlist!.length, (index) {
+                  return AccordionSection(
+                    isOpen: true,
+                    header: Text(exerlist![index].name.toString()), 
+                    content: Text("SSS"));
                 }),
               ),
             ],

@@ -56,6 +56,7 @@ class _AddPostState extends State<AddPost> {
         shadowColor: Colors.black,
       ),
       body: Material(
+        child: SingleChildScrollView (
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -99,6 +100,7 @@ class _AddPostState extends State<AddPost> {
           ],
         ),
       ),
+      )
     );
   }
 }
