@@ -7,11 +7,40 @@ import 'package:flutter/material.dart';
 UserService userService = UserService();
 ExerciseService exerciseService = ExerciseService();
 late Future<List<Exercise>> exerlist;
-class TodayRoutine extends StatelessWidget {
+class TodayRoutine extends StatefulWidget {
   const TodayRoutine({super.key});
+
+  @override
+  State<TodayRoutine> createState() => _TodayRoutineState();
+}
+
+class _TodayRoutineState extends State<TodayRoutine> {
+  List<TextEditingController> controllers = [];
   
+  @override
+  void initState() {
+    super.initState();
+    createControllers(5);
+  }
+
+  @override dispose() {
+    disposeControllers();
+    super.dispose();
+  }
+  void createControllers(int numberOfControllers) {
+    for (int i = 0; i < numberOfControllers; i++) {
+      TextEditingController controller = TextEditingController();
+      controllers.add(controller);
+    }
+  }
+  void disposeControllers() {
+    for (TextEditingController controller in controllers) {
+      controller.dispose();
+    }
+  }
+
   Future<void> updateExercise(List<Exercise> updatedList, String dayOfWeek) async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
@@ -49,8 +78,9 @@ class TodayRoutine extends StatelessWidget {
     }
     
   }
+
   Future<List<Exercise>> getExercise(String dayOfWeek) async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     var exerciseListTemp;
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
@@ -81,10 +111,8 @@ class TodayRoutine extends StatelessWidget {
     return exerciseListTemp;
   }
 
-  
-
   Future<bool> ifExerciseIsEmpty (String dayOfWeek) async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     bool result = false;
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
@@ -138,6 +166,7 @@ class TodayRoutine extends StatelessWidget {
         return 'Unknown';
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,8 +174,16 @@ class TodayRoutine extends StatelessWidget {
         title: Text("Your today routine"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(getWeekDayString()),
+      body: Column(
+        children: List.generate(controllers.length, (index) {
+          return TextField(
+            controller: controllers[index],
+            decoration: InputDecoration(
+              hintText: my_username,
+
+            ),
+          );
+        }),
       ),
     );
   }

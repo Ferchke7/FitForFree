@@ -162,12 +162,28 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
                 
         child: ListView(
           
-          children: const <Widget>[
+          children: <Widget>[
             UserInformation(),            
-            ListTile(
-              title: Text('Change your information')
+            const ListTile(
+              title: Text('Welcome '),
+            
             ),
-
+            const ListTile(
+              title: Text("This part under development,\nit will include some function in the future.\n"),
+            ),
+            const ListTile(
+              title: Text("If you want to quit, there is a button for sign-out"),
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                shape: StadiumBorder(),
+              ),
+              onPressed: ()
+             {
+              print("Pressed");
+             },
+            icon: const Icon(Icons.chat), 
+            label: Text("Live Chatting"))
           ],
           
         ),

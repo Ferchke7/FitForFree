@@ -53,7 +53,7 @@ class _EditRoutineState extends State<EditRoutine> {
     ];
   }
     Future<void> updateExercise(List<Exercise> updatedList) async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     
     switch (widget.day.toLowerCase()) {
       case 'monday':
@@ -95,7 +95,7 @@ class _EditRoutineState extends State<EditRoutine> {
   
 
   Future<bool> ifExerciseIsEmpty () async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     bool result = false;
     switch (widget.day.toLowerCase()) {
       case 'monday':
@@ -130,7 +130,7 @@ class _EditRoutineState extends State<EditRoutine> {
 
 
   Future<List<Exercise>> getExercise() async {
-    User? currentUser = await userService.getUserByUsername(my_username);
+    User? currentUser = await userService.getUserByUsername(my_username!);
     var exerciseListTemp;
     switch (widget.day.toLowerCase()) {
       case 'monday':

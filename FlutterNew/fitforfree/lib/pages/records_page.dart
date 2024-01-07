@@ -22,7 +22,7 @@ class _AddRecordsState extends State<AddRecords> {
   }
 
   Future<void> _initCurrentUser() async {
-    User? loadedUser = await userService.getUserByUsername(my_username);
+    User? loadedUser = await userService.getUserByUsername(my_username!);
 
     setState(() {
       currentUser = loadedUser!;

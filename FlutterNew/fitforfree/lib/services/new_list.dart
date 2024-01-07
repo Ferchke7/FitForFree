@@ -98,12 +98,12 @@ class _NewsListState extends State<NewsList> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          TextButton(
-                            child: Text("♥  ${postList[index].likes}"),
-                            onPressed: () {
-                              },
+                          // TextButton(
+                          //   child: Text("♥  ${postList[index].likes}"),
+                          //   onPressed: () {
+                          //     },
                               
-                          ), 
+                          // ), 
                           const SizedBox(width: 3,height: 10,),
                           TextButton(
                             child: Text("comments: ${postList[index].postsComments.length}"),

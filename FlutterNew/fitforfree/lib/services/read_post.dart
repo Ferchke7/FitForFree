@@ -30,7 +30,7 @@ class _ReadPostState extends State<ReadPost> {
       _isPosted = true;
     });
     final accessToken = client.auth.currentSession?.accessToken;
-    final String apiUrl = 'http://192.227.152.231:3333/Blog/AddCommentToBlog/$postId/comments'; // Replace with your actual base URL
+    final String apiUrl = 'http://192.227.152.231:3333/Blog/AddCommentToBlog/$postId/comments';
 
     final response = await http.post(
       Uri.parse(apiUrl),
