@@ -3,11 +3,12 @@ import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/exercise.dart';
 import 'package:fitforfree/models/user.dart';
+import 'package:fitforfree/services/add_daily_routine.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
+
 UserService userService = UserService();
 ExerciseService exerciseService = ExerciseService();
-
 
 class TodayRoutine extends StatefulWidget {
   const TodayRoutine({super.key});
@@ -25,31 +26,37 @@ class _TodayRoutineState extends State<TodayRoutine> {
     super.initState();
     tempExerList = getExercise(getWeekDayString());
     initExerList();
-    
   }
+
   void refresh() {
-    setState(() {
-      
-    });
+    setState(() {});
   }
+
   int getControllerAmount() {
     int result = 0;
-    for(int i = 0; i < exerlist!.length; i++) {
-      result+= exerlist![i].reps;
+    for (int i = 0; i < exerlist!.length; i++) {
+      result += exerlist![i].reps;
     }
     return result;
   }
 
-  @override dispose() {
+  @override
+  dispose() {
     disposeControllers();
     super.dispose();
   }
 
   Future<void> initExerList() async {
+  if (tempExerList != null) {
     exerlist = await tempExerList;
     createControllers(getControllerAmount());
     debugPrint(getControllerAmount().toString());
+  } else {
+    debugPrint("SOMETHING WEIRD");
+    debugPrint(tempExerList.toString());
   }
+}
+
 
   void createControllers(int numberOfControllers) {
     for (int i = 0; i < numberOfControllers; i++) {
@@ -57,15 +64,17 @@ class _TodayRoutineState extends State<TodayRoutine> {
       controllers.add(controller);
     }
   }
+
   void disposeControllers() {
     for (TextEditingController controller in controllers) {
       controller.dispose();
     }
   }
 
-  Future<void> updateExercise(List<Exercise> updatedList, String dayOfWeek) async {
+  Future<void> updateExercise(
+      List<Exercise> updatedList, String dayOfWeek) async {
     User? currentUser = await userService.getUserByUsername(my_username!);
-    
+
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
         currentUser?.monday = exerciseService.encodeExercises(updatedList);
@@ -97,10 +106,8 @@ class _TodayRoutineState extends State<TodayRoutine> {
         userService.updateUser(currentUser!);
         break;
       default:
-        
         break;
     }
-    
   }
 
   Future<List<Exercise>> getExercise(String dayOfWeek) async {
@@ -110,25 +117,32 @@ class _TodayRoutineState extends State<TodayRoutine> {
     var exerciseListTemp;
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.monday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.monday!);
         break;
       case 'tuesday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.tuesday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.tuesday!);
         break;
       case 'wednesday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.wednesday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.wednesday!);
         break;
       case 'thursday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.thursday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.thursday!);
         break;
       case 'friday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.friday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.friday!);
         break;
       case 'sunday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.sunday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.sunday!);
         break;
       case 'saturday':
-        exerciseListTemp = exerciseService.decodeExercises(currentUser!.saturday!);
+        exerciseListTemp =
+            exerciseService.decodeExercises(currentUser!.saturday!);
         break;
       default:
         exerciseListTemp = [];
@@ -138,13 +152,13 @@ class _TodayRoutineState extends State<TodayRoutine> {
     return exerciseListTemp;
   }
 
-  Future<bool> ifExerciseIsEmpty (String dayOfWeek) async {
+  Future<bool> ifExerciseIsEmpty(String dayOfWeek) async {
     User? currentUser = await userService.getUserByUsername(my_username!);
     bool result = false;
     switch (dayOfWeek.toLowerCase()) {
       case 'monday':
         result = currentUser?.monday == null;
-        
+
         break;
       case 'tuesday':
         result = currentUser?.tuesday == null;
@@ -195,39 +209,56 @@ class _TodayRoutineState extends State<TodayRoutine> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text("Your today routine"),
-      centerTitle: true,
-    ),
-    body:SingleChildScrollView(
-      child: 
-    FutureBuilder(
-      future: initExerList(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Column(
-            children: <Widget>[
-              const Text("Some"),
-              Column(
-                children: List.generate(exerlist!.length, (index) {
-                  return AccordionSection(
-                    isOpen: false,
-                    header: Text(exerlist![index].name.toString()), 
-                    content: const Text("SSS"));
-                }),
-              ),
-            ],
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    ),
-  ),
-  );
-}
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Your today routine"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: initExerList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Column(
+                children: <Widget>[
+                  const Text("Some"),
+                  Column(
+                    children: List.generate(exerlist!.length, (index) {
+                      return AccordionSection(
+                          isOpen: true,
+                          contentVerticalPadding: 50,
+                          leftIcon: const Icon(
+                            Icons.sports_gymnastics,
+                          ),
+                          headerBackgroundColor: (Colors.black),
+                          header: Text(
+                            exerlist![index].name.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          content: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: MyInputForm(exercise: exerlist![index],),
+                           )
+                      );
+                    }
+            
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
 }

@@ -1,4 +1,4 @@
-import 'package:path/path.dart';
+import "package:path/path.dart";
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -15,7 +15,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'userDb.db'); //fvf.db
+    String path = join(await getDatabasesPath(), 'userDatabase.db'); //fvf.db
     return await openDatabase(
       path,
       version: 1,

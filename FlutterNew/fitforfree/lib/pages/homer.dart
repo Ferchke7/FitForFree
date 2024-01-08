@@ -1,4 +1,6 @@
+import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/start_tday_routine.dart';
+import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -11,6 +13,40 @@ class HomerPage extends StatefulWidget {
 
 class _HomePageState extends State<HomerPage> {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
+
+  Future<bool> ifExerciseIsEmpty(String dayOfWeek) async {
+    User? currentUser = await userService.getUserByUsername(my_username!);
+    bool result = false;
+    switch (dayOfWeek.toLowerCase()) {
+      case 'monday':
+        result = currentUser?.monday == null;
+
+        break;
+      case 'tuesday':
+        result = currentUser?.tuesday == null;
+
+        break;
+      case 'wednesday':
+        result = currentUser?.wednesday == null;
+        break;
+      case 'thursday':
+        result = currentUser?.thursday == null;
+        break;
+      case 'friday':
+        result = currentUser?.friday == null;
+        break;
+      case 'sunday':
+        result = currentUser?.sunday == null;
+        break;
+      case 'saturday':
+        result = currentUser?.saturday == null;
+        break;
+      default:
+        result = false;
+        break;
+    }
+    return result;
+  }
 
   String getWeekDayString() {
     DateTime now = DateTime.now();
@@ -37,38 +73,58 @@ class _HomePageState extends State<HomerPage> {
   Widget buildContentForIndex(int index) {
     switch (index) {
       case 0:
-        return 
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const TodayRoutine()));
-        }, child: Text("Start your ${getWeekDayString()} routine"
-        ,style: const TextStyle(color: Colors.white))
-        );
-        case 1:
         return TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-          ),
-          onPressed: () {
-          debugPrint("tapped");
-
-        }, child: Text("Look your ${getWeekDayString()} routine history"
-        ,style: const TextStyle(color: Colors.white))
-        );
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () async {
+              if (await ifExerciseIsEmpty(getWeekDayString())) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("No routine"),
+                      content: Text("Add routine, or take a rest today :)"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TodayRoutine()));
+              }
+            },
+            child: Text("Start your ${getWeekDayString()} routine",
+                style: const TextStyle(color: Colors.white)));
+      case 1:
+        return TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              debugPrint("tapped");
+            },
+            child: Text("Look your ${getWeekDayString()} routine history",
+                style: const TextStyle(color: Colors.white)));
       case 2:
         return TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-          ),
-          onPressed: () {
-          debugPrint("tapped");
-
-        }, child: const Text("Look at your all routines history"
-        ,style: TextStyle(color: Colors.white))
-        );
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              debugPrint("tapped");
+            },
+            child: const Text("Look at your all routines history",
+                style: TextStyle(color: Colors.white)));
       default:
         return const Text("LOOL()");
     }
@@ -128,11 +184,18 @@ class _HomePageState extends State<HomerPage> {
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                        tileColor: Colors.white,
-                        title: Text("Hello, Welcome to Fit For Free", 
-                        style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.black ),),
-                        subtitle: Text("I welcome you in a free application.\n The Idea of this application share your routine, and be able to track your records, being able to connect with people with same ideas.\n Welcome again! With Regards!",
-                        style: TextStyle(fontSize: 25, color: Colors.black),),
+                      tileColor: Colors.white,
+                      title: Text(
+                        "Hello, Welcome to Fit For Free",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      subtitle: Text(
+                        "I welcome you in a free application.\n The Idea of this application share your routine, and be able to track your records, being able to connect with people with same ideas.\n Welcome again! With Regards!",
+                        style: TextStyle(fontSize: 25, color: Colors.black),
+                      ),
                     )
                   ],
                 ),
