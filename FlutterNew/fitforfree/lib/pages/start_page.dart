@@ -3,7 +3,7 @@ import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({super.key});
 
   @override
   State<StartPage> createState() => _StartPageState();

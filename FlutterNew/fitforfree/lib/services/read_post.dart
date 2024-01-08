@@ -49,14 +49,14 @@ class _ReadPostState extends State<ReadPost> {
         _comment.clear();
         _isPosted = false;
       });
-      print('Post Successful!');
+      debugPrint('Post Successful!');
     } else {
       setState(() {
         _isPosted = false;
       });
-      print(response.body);
+      debugPrint(response.body);
       // Request failed, handle the error
-      print('Failed to post data. Error: ${response.statusCode}');
+      debugPrint('Failed to post data. Error: ${response.statusCode}');
     }
   }
 
@@ -70,7 +70,7 @@ class _ReadPostState extends State<ReadPost> {
   Future<List<dynamic>> fetchPostList(int blogId) async {
     try {
       final accessToken = client.auth.currentSession?.accessToken;
-      print(accessToken);
+      debugPrint(accessToken);
       if (accessToken == null) {
         throw Exception('Access token is null.');
       }
@@ -93,7 +93,7 @@ class _ReadPostState extends State<ReadPost> {
         throw Exception('Failed to load posts');
       }
     } catch (e) {
-      print('Error fetching posts: $e');
+      debugPrint('Error fetching posts: $e');
       throw Exception('Failed to load posts');
     }
   }
@@ -145,7 +145,7 @@ class _ReadPostState extends State<ReadPost> {
                         bottomRight: Radius.circular(32))),
                         leading: GestureDetector(
                           onTap: () async {
-                            print("Comment Tapped");
+                            debugPrint("Comment Tapped");
                           },
                           child: Container(
                             height: 30.0,
@@ -197,7 +197,7 @@ class _ReadPostState extends State<ReadPost> {
                           List<dynamic> updatedComment = await fetchPostList(post.id);
                           setState(() {
                             post.postsComments = updatedComment;
-                            print(post.postsComments);  
+                            debugPrint(post.postsComments.toString());  
                           });
                           
                         },

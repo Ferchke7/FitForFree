@@ -35,7 +35,7 @@ class _AddRecordsState extends State<AddRecords> {
     //ExerciseService exerciseService = ExerciseService();
     return Scaffold(
       appBar: AppBar(
-        title: Text("The routine"),
+        title: const Text("The routine"),
         centerTitle: true,
       ),
       body: ListView.builder(

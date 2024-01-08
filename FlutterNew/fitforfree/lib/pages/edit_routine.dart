@@ -59,7 +59,7 @@ class _EditRoutineState extends State<EditRoutine> {
       case 'monday':
         currentUser?.monday = exerciseService.encodeExercises(updatedList);
         userService.updateUser(currentUser!);
-        print("ADDED MONDAY");
+        debugPrint("ADDED MONDAY");
         break;
       case 'tuesday':
         currentUser?.tuesday = exerciseService.encodeExercises(updatedList);
@@ -222,7 +222,7 @@ class _EditRoutineState extends State<EditRoutine> {
                 repsTemp, 
                 0);
                
-                print(tempExercise.toString());
+                debugPrint(tempExercise.toString());
                 updateExercise(tempExercise);
                 _newExerController.clear();
                 _newRepsController.clear();
@@ -236,7 +236,7 @@ class _EditRoutineState extends State<EditRoutine> {
                 repsTemp, 
                 0);
                
-                print(currentList.toString());
+                debugPrint(currentList.toString());
                 updateExercise(currentList);
                 _newExerController.clear();
                 _newRepsController.clear();
@@ -299,13 +299,13 @@ class _EditRoutineState extends State<EditRoutine> {
                             const SnackBar(
                               content: Text('Sorry but this is not implemented yet, but you can delete it if you want ^^'),
                               backgroundColor: Colors.redAccent,
-                              duration: const Duration(seconds: 1),
+                              duration: Duration(seconds: 1),
                             )
                             );
                           },
                         ),
                         DataCell(
-                          Icon(Icons.delete),
+                          const Icon(Icons.delete),
                           onTap: () async {
                             List<Exercise> currentList = await exerlist;
                             exerciseService.deleteExercise(currentList, e.name);

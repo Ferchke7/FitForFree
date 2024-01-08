@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class AddPost extends StatefulWidget
  
 {
-  const AddPost({Key? key}) : super(key: key);
+  const AddPost({super.key});
 
   @override
   State<AddPost> createState() => _AddPostState();
@@ -25,7 +25,7 @@ class _AddPostState extends State<AddPost> {
   }
   Future<void> postData() async {
     final accessToken = client.auth.currentSession?.accessToken;
-    final String apiUrl = 'http://192.227.152.231:3333/Blog/CreatePost'; // Replace with your actual base URL
+    const String apiUrl = 'http://192.227.152.231:3333/Blog/CreatePost'; // Replace with your actual base URL
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -41,10 +41,10 @@ class _AddPostState extends State<AddPost> {
 
     if (response.statusCode == 200) {
       // Request was successful, you can handle the response here
-      print('Post Successful!');
+      debugPrint('Post Successful!');
     } else {
       // Request failed, handle the error
-      print('Failed to post data. Error: ${response.statusCode}');
+      debugPrint('Failed to post data. Error: ${response.statusCode}');
     }
   }
 

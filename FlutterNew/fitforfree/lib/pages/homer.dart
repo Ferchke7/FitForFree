@@ -43,7 +43,7 @@ class _HomePageState extends State<HomerPage> {
             foregroundColor: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TodayRoutine()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const TodayRoutine()));
         }, child: Text("Start your ${getWeekDayString()} routine"
         ,style: const TextStyle(color: Colors.white))
         );
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomerPage> {
             foregroundColor: Colors.white,
           ),
           onPressed: () {
-          print("tapped");
+          debugPrint("tapped");
 
         }, child: Text("Look your ${getWeekDayString()} routine history"
         ,style: const TextStyle(color: Colors.white))
@@ -64,13 +64,13 @@ class _HomePageState extends State<HomerPage> {
             foregroundColor: Colors.white,
           ),
           onPressed: () {
-          print("tapped");
+          debugPrint("tapped");
 
         }, child: const Text("Look at your all routines history"
         ,style: TextStyle(color: Colors.white))
         );
       default:
-        return Text("LOOL()");
+        return const Text("LOOL()");
     }
   }
 

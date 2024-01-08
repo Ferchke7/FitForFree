@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NewsList extends StatefulWidget {
-  const NewsList({Key? key}) : super(key: key);
+  const NewsList({super.key});
 
   @override
   _NewsListState createState() => _NewsListState();
@@ -27,7 +27,7 @@ class _NewsListState extends State<NewsList> {
   Future<List<Post>> fetchPostList() async {
     try {
       final accessToken = client.auth.currentSession?.accessToken;
-      print(accessToken);
+      debugPrint(accessToken);
       if (accessToken == null) {
         throw Exception('Access token is null.');
       }
@@ -48,7 +48,7 @@ class _NewsListState extends State<NewsList> {
         throw Exception('Failed to load posts');
       }
     } catch (e) {
-      print('Error fetching posts: $e');
+      debugPrint('Error fetching posts: $e');
       throw Exception('Failed to load posts');
     }
   }
@@ -122,7 +122,7 @@ class _NewsListState extends State<NewsList> {
         },
       ),
       floatingActionButton: FloatingActionButton.small(
-        backgroundColor: Color.fromARGB(255, 12, 47, 173),
+        backgroundColor: const Color.fromARGB(255, 12, 47, 173),
         onPressed: () async {
            final result = await Navigator.push(
                 context,

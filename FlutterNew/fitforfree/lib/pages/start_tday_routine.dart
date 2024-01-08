@@ -48,7 +48,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
   Future<void> initExerList() async {
     exerlist = await tempExerList;
     createControllers(getControllerAmount());
-    print(getControllerAmount());
+    debugPrint(getControllerAmount().toString());
   }
 
   void createControllers(int numberOfControllers) {
@@ -70,7 +70,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
       case 'monday':
         currentUser?.monday = exerciseService.encodeExercises(updatedList);
         userService.updateUser(currentUser!);
-        print("ADDED MONDAY");
+        debugPrint("ADDED MONDAY");
         break;
       case 'tuesday':
         currentUser?.tuesday = exerciseService.encodeExercises(updatedList);
@@ -105,7 +105,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
 
   Future<List<Exercise>> getExercise(String dayOfWeek) async {
     my_username ??= getUser();
-    print(my_username);
+    debugPrint(my_username);
     User? currentUser = await userService.getUserByUsername(my_username!);
     var exerciseListTemp;
     switch (dayOfWeek.toLowerCase()) {
@@ -134,7 +134,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
         exerciseListTemp = [];
         break;
     }
-    print(exerciseListTemp.toString());
+    debugPrint(exerciseListTemp.toString());
     return exerciseListTemp;
   }
 
@@ -198,7 +198,7 @@ class _TodayRoutineState extends State<TodayRoutine> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text("Your today routine"),
+      title: const Text("Your today routine"),
       centerTitle: true,
     ),
     body:SingleChildScrollView(
@@ -209,19 +209,19 @@ Widget build(BuildContext context) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Column(
             children: <Widget>[
-              Text("Some"),
+              const Text("Some"),
               Column(
                 children: List.generate(exerlist!.length, (index) {
                   return AccordionSection(
-                    isOpen: true,
+                    isOpen: false,
                     header: Text(exerlist![index].name.toString()), 
-                    content: Text("SSS"));
+                    content: const Text("SSS"));
                 }),
               ),
             ],
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

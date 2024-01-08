@@ -9,8 +9,7 @@ class UserInfo {
     required this.email,
   });
 
-  String get _email => email;
-  String get _name => name;
+  
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
       id: json['id'],

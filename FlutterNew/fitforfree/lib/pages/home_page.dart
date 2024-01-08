@@ -37,15 +37,15 @@ void _initUser() async {
     User? tempUser = await userService.getUserByUsername(username);
     userId = tempUser!.id!;
     my_username = tempUser.username!;
-    print("SUCC ADDED");
+    debugPrint("SUCC ADDED");
   }
   else {
   
     var temp = existingUser.username;
     userId = existingUser.id!;
     my_username = temp!;
-    print("ALREADY $temp");
-    print(DateTime.now().toString());
+    debugPrint("ALREADY $temp");
+    debugPrint(DateTime.now().toString());
   }
 }
 
@@ -165,7 +165,7 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
         child: ListView(
           
           children: <Widget>[
-            UserInformation(),            
+            const UserInformation(),            
             const ListTile(
               title: Text('Welcome '),
             
@@ -178,14 +178,14 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
             ),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
+                shape: const StadiumBorder(),
               ),
               onPressed: ()
              {
-              print("Pressed");
+              debugPrint("Pressed");
              },
             icon: const Icon(Icons.chat), 
-            label: Text("Live Chatting"))
+            label: const Text("Live Chatting"))
           ],
           
         ),
