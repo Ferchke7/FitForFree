@@ -1,4 +1,5 @@
 import 'package:accordion/accordion.dart';
+import 'package:accordion/controllers.dart';
 import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/exercise.dart';
@@ -47,16 +48,15 @@ class _TodayRoutineState extends State<TodayRoutine> {
   }
 
   Future<void> initExerList() async {
-  if (tempExerList != null) {
-    exerlist = await tempExerList;
-    createControllers(getControllerAmount());
-    debugPrint(getControllerAmount().toString());
-  } else {
-    debugPrint("SOMETHING WEIRD");
-    debugPrint(tempExerList.toString());
+    if (tempExerList != null) {
+      exerlist = await tempExerList;
+      createControllers(getControllerAmount());
+      debugPrint(getControllerAmount().toString());
+    } else {
+      debugPrint("SOMETHING WEIRD");
+      debugPrint(tempExerList.toString());
+    }
   }
-}
-
 
   void createControllers(int numberOfControllers) {
     for (int i = 0; i < numberOfControllers; i++) {
@@ -225,30 +225,49 @@ class _TodayRoutineState extends State<TodayRoutine> {
                   const Text("Some"),
                   Column(
                     children: List.generate(exerlist!.length, (index) {
-                      return AccordionSection(
-                          isOpen: true,
-                          contentVerticalPadding: 50,
-                          leftIcon: const Icon(
-                            Icons.sports_gymnastics,
-                          ),
-                          headerBackgroundColor: (Colors.black),
-                          header: Text(
-                            exerlist![index].name.toString(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 23,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          content: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: MyInputForm(exercise: exerlist![index],),
-                           )
-                      );
-                    }
-            
-                    ),
+                      return Accordion(
+                          headerBorderColor: Colors.blueGrey,
+                          headerBorderColorOpened: Colors.transparent,
+                          headerBorderWidth: 1,
+                          headerBackgroundColorOpened: Colors.green,
+                          contentBackgroundColor: Colors.white,
+                          contentBorderColor: Colors.green,
+                          contentBorderWidth: 3,
+                          contentHorizontalPadding: 100,
+                          scaleWhenAnimating: true,
+                          openAndCloseAnimation: true,
+                          headerPadding: const EdgeInsets.symmetric(
+                              vertical: 3, horizontal: 20),
+                          sectionOpeningHapticFeedback:
+                              SectionHapticFeedback.heavy,
+                          sectionClosingHapticFeedback:
+                              SectionHapticFeedback.light,
+                          children: [
+                            AccordionSection(
+                                isOpen: false,
+                                contentVerticalPadding: 1,
+                                leftIcon: const Icon(
+                                  Icons.sports_gymnastics,
+                                ),
+                                headerBackgroundColor: (Colors.black),
+                                header: Text(
+                                  exerlist![index].name.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                content: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: MyInputForm(
+                                    exercise: exerlist![index],
+                                  ),
+                                ))
+                          ]);
+                    }),
                   ),
+                  
                 ],
               );
             } else {

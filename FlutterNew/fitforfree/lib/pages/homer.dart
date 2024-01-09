@@ -83,7 +83,8 @@ class _HomePageState extends State<HomerPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("No routine"),
+                      
+                      title: const Text("No routine"),
                       content: Text("Add routine, or take a rest today :)"),
                       actions: <Widget>[
                         TextButton(
@@ -126,7 +127,7 @@ class _HomePageState extends State<HomerPage> {
             child: const Text("Look at your all routines history",
                 style: TextStyle(color: Colors.white)));
       default:
-        return const Text("LOOL()");
+        return const Text("Wrong()");
     }
   }
 

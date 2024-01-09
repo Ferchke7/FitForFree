@@ -54,6 +54,8 @@ class UserService {
     );
     }
 
+  
+
   Future<int> insertRecord(Records record) async {
     Database db = await dbHelper.database;
     return await db.insert('records', {
