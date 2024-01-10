@@ -50,17 +50,12 @@ class _UserInformationState extends State<UserInformation> {
           return Text('Error: ${snapshot.error}');
         } else {
           final userInfo = snapshot.data!;
-      
+
           return UserAccountsDrawerHeader(
-            
             accountName: Text(userInfo.name),
             accountEmail: Text(userInfo.email),
-            
-            decoration: const BoxDecoration(
-              color: Colors.black54
-            ),
+            decoration: const BoxDecoration(color: Colors.black54),
           );
-          
         }
       },
     );

@@ -5,8 +5,6 @@ import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class ReadPost extends StatefulWidget {
   const ReadPost({super.key});
   @override
@@ -30,7 +28,8 @@ class _ReadPostState extends State<ReadPost> {
       _isPosted = true;
     });
     final accessToken = client.auth.currentSession?.accessToken;
-    final String apiUrl = 'http://192.227.152.231:3333/Blog/AddCommentToBlog/$postId/comments';
+    final String apiUrl =
+        'http://192.227.152.231:3333/Blog/AddCommentToBlog/$postId/comments';
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -60,11 +59,9 @@ class _ReadPostState extends State<ReadPost> {
     }
   }
 
-
-  String changeDate (String input) {
-    return input.substring(0,10);
+  String changeDate(String input) {
+    return input.substring(0, 10);
   }
-  
 
   ///We need to refresh this page
   Future<List<dynamic>> fetchPostList(int blogId) async {
@@ -76,19 +73,17 @@ class _ReadPostState extends State<ReadPost> {
       }
 
       final response = await http.get(
-      Uri.parse('http://192.227.152.231:3333/Blog/GetPostComments?blogId=$blogId'),        
-      headers: {
+        Uri.parse(
+            'http://192.227.152.231:3333/Blog/GetPostComments?blogId=$blogId'),
+        headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.authorizationHeader: "Bearer $accessToken"
         },
-        
-        
       );
 
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         return data;
-        
       } else {
         throw Exception('Failed to load posts');
       }
@@ -116,7 +111,6 @@ class _ReadPostState extends State<ReadPost> {
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.all(15.0),
-                    
                     child: Text(
                       post.description,
                       textAlign: TextAlign.left,
@@ -124,14 +118,13 @@ class _ReadPostState extends State<ReadPost> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-                      
                     ),
                   ),
                   const Divider(
-                      height: 20,
-                      thickness: 1,
-                      color: Colors.black,
-                    ),
+                    height: 20,
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
                   // Add your comments list here
                   ListView.builder(
                     shrinkWrap: true,
@@ -140,9 +133,10 @@ class _ReadPostState extends State<ReadPost> {
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
                       child: ListTile(
-                        shape: const RoundedRectangleBorder(borderRadius: 
-                        BorderRadius.only(topRight: Radius.circular(32),
-                        bottomRight: Radius.circular(32))),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(32),
+                                bottomRight: Radius.circular(32))),
                         leading: GestureDetector(
                           onTap: () async {
                             debugPrint("Comment Tapped");
@@ -151,9 +145,9 @@ class _ReadPostState extends State<ReadPost> {
                             height: 30.0,
                             width: 20.0,
                             decoration: const BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
+                                color: Colors.blue,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
                           ),
                         ),
                         title: Text(
@@ -165,22 +159,20 @@ class _ReadPostState extends State<ReadPost> {
                           changeDate(post.postsComments[index]['updateDate']),
                           style: const TextStyle(fontSize: 10),
                         ),
-                        
                       ),
-                      
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          
+
           // Add the text input and send button
           Container(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                 Expanded(
+                Expanded(
                   child: TextField(
                     controller: _comment,
                     decoration: const InputDecoration(
@@ -194,12 +186,12 @@ class _ReadPostState extends State<ReadPost> {
                       ? null
                       : () async {
                           await postData(post.id);
-                          List<dynamic> updatedComment = await fetchPostList(post.id);
+                          List<dynamic> updatedComment =
+                              await fetchPostList(post.id);
                           setState(() {
                             post.postsComments = updatedComment;
-                            debugPrint(post.postsComments.toString());  
+                            debugPrint(post.postsComments.toString());
                           });
-                          
                         },
                   child: _isPosted
                       ? const CircularProgressIndicator()

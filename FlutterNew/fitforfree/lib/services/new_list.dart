@@ -57,9 +57,7 @@ class _NewsListState extends State<NewsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-           child: Text('Forum')
-        ),
+        title: const Center(child: Text('Forum')),
         shadowColor: Colors.black,
       ),
       body: FutureBuilder<List<Post>>(
@@ -75,46 +73,55 @@ class _NewsListState extends State<NewsList> {
               itemCount: postList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: (){
-                      Navigator.push
-                      (context, MaterialPageRoute(builder: (context) 
-                      {return const ReadPost();},
-                      settings: RouteSettings(arguments: {'postList': postList[index]}
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ReadPost();
+                        },
+                        settings: RouteSettings(
+                            arguments: {'postList': postList[index]}),
                       ),
-                      ),
-                      );
+                    );
                   },
-                child: Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      ListTile(
-                        
-                        title: Text(postList[index].titleName),
-                        subtitle: Text(
-                          'Created by: ${postList[index].author}\n\n${postList[index].description}...',
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          // TextButton(
-                          //   child: Text("♥  ${postList[index].likes}"),
-                          //   onPressed: () {
-                          //     },
-                              
-                          // ), 
-                          const SizedBox(width: 3,height: 10,),
-                          TextButton(
-                            child: Text("comments: ${postList[index].postsComments.length}"),
-                            onPressed: () {/* ... */},
+                  child: Card(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(postList[index].titleName),
+                          subtitle: Text(
+                            'Created by: ${postList[index].author}\n\n${postList[index].description}...',
                           ),
-                          const SizedBox(width: 3, height: 10,),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            // TextButton(
+                            //   child: Text("♥  ${postList[index].likes}"),
+                            //   onPressed: () {
+                            //     },
+
+                            // ),
+                            const SizedBox(
+                              width: 3,
+                              height: 10,
+                            ),
+                            TextButton(
+                              child: Text(
+                                  "comments: ${postList[index].postsComments.length}"),
+                              onPressed: () {/* ... */},
+                            ),
+                            const SizedBox(
+                              width: 3,
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
                 );
               },
             );
@@ -124,18 +131,20 @@ class _NewsListState extends State<NewsList> {
       floatingActionButton: FloatingActionButton.small(
         backgroundColor: const Color.fromARGB(255, 12, 47, 173),
         onPressed: () async {
-           final result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddPost()),
-                );
-           if (result) {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddPost()),
+          );
+          if (result) {
             setState(() {
               _postList = fetchPostList();
             });
-           }
-          },
-          
-        child: const Icon(Icons.add_box_outlined, color: Colors.white,),
+          }
+        },
+        child: const Icon(
+          Icons.add_box_outlined,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -84,13 +84,3 @@ class _ShowAllDataState extends State<ShowAllData> {
     );
   }
 }
-
-/*
-itemBuilder: (BuildContext context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text("Name of Exercise: ${justExercise[index].name}\nReps: ${justExercise[index].reps}\nWeight/Times: ${justExercise[index].weight} kg/lbs"),
-                    ),
-                  );
-                });
-*/

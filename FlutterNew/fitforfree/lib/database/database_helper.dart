@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    
+
     _database = await _initDatabase();
     return _database!;
   }
@@ -23,10 +23,8 @@ class DatabaseHelper {
     );
   }
 
-  
-Future<void> _createDb(Database db, int version) async {
-  
-  await db.execute('''
+  Future<void> _createDb(Database db, int version) async {
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS user(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT,
@@ -41,7 +39,7 @@ Future<void> _createDb(Database db, int version) async {
     )
   ''');
 
-  await db.execute('''
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS records(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
@@ -52,6 +50,4 @@ Future<void> _createDb(Database db, int version) async {
     )
   ''');
   }
-
-  
 }

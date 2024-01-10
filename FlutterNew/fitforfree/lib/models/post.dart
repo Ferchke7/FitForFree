@@ -24,17 +24,17 @@ class Post {
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
-  return Post(
-    id: json['id'] ?? 0,
-    userId: json['userId'] ?? 0,
-    titleName: json['titleName'] ?? '',
-    author: json['author'] ?? '',
-    visitors: json['visitors'] ?? 0,
-    likes: json['likes'] ?? 0,
-    description: json['description'] ?? '',
-    createDate: DateTime.parse(json['createDate'] ?? ''),
-    updateDate: DateTime.parse(json['updateDate'] ?? ''),
-    postsComments: json['postsComments'] ?? [],
-  );
+    return Post(
+      id: json['id'] ?? 0,
+      userId: json['userId'] ?? 0,
+      titleName: json['titleName'] ?? '',
+      author: json['author'] ?? '',
+      visitors: json['visitors'] ?? 0,
+      likes: json['likes'] ?? 0,
+      description: json['description'] ?? '',
+      createDate: DateTime.parse(json['createDate'] ?? ''),
+      updateDate: DateTime.parse(json['updateDate'] ?? ''),
+      postsComments: json['postsComments'] ?? [],
+    );
   }
 }

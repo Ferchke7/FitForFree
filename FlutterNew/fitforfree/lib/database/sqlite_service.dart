@@ -30,7 +30,6 @@ class UserService {
     });
   }
 
-  
   Future<User?> getUserByUsername(String username) async {
     Database db = await dbHelper.database;
     List<Map<String, dynamic>> maps =
@@ -52,9 +51,7 @@ class UserService {
       sunday: maps[0]['sunday'],
       creationDate: maps[0]['creation_date'],
     );
-    }
-
-  
+  }
 
   Future<int> insertRecord(Records record) async {
     Database db = await dbHelper.database;
@@ -67,7 +64,8 @@ class UserService {
 
   Future<List<Records>> getRecordsByUserId(int userId) async {
     Database db = await dbHelper.database;
-    List<Map<String, dynamic>> maps = await db.query('records', where: 'user_id = ?', whereArgs: [userId]);
+    List<Map<String, dynamic>> maps =
+        await db.query('records', where: 'user_id = ?', whereArgs: [userId]);
     return List.generate(maps.length, (i) {
       return Records(
         id: maps[i]['id'],
@@ -83,10 +81,11 @@ class UserService {
     Database db = await dbHelper.database;
     return await db.delete('records', where: 'id = ?', whereArgs: [recordId]);
   }
+
   Future<List<Records>> getRecordsByWeekName(String weekName) async {
     Database db = await dbHelper.database;
-    List<Map<String, dynamic>> maps =
-        await db.query('records', where: 'week_name = ?', whereArgs: [weekName]);
+    List<Map<String, dynamic>> maps = await db
+        .query('records', where: 'week_name = ?', whereArgs: [weekName]);
 
     return List.generate(maps.length, (i) {
       return Records(
@@ -98,7 +97,9 @@ class UserService {
       );
     });
   }
-   Future<List<Records>> getRecordsByUserIdAndWeekName(int userId, String weekName) async {
+
+  Future<List<Records>> getRecordsByUserIdAndWeekName(
+      int userId, String weekName) async {
     Database db = await dbHelper.database;
     List<Map<String, dynamic>> maps = await db.query(
       'records',
@@ -116,7 +117,7 @@ class UserService {
       );
     });
   }
-  
+
   Future<int> updateUser(User updatedUser) async {
     Database db = await dbHelper.database;
     return await db.update(
@@ -127,4 +128,3 @@ class UserService {
     );
   }
 }
-

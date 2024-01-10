@@ -21,7 +21,6 @@ class _MyInputFormState extends State<MyInputForm> {
   List<int> addedList = [];
   ExerciseService exerciseService = ExerciseService();
   UserService userService = UserService();
-  
 
   @override
   void initState() {
@@ -71,10 +70,9 @@ class _MyInputFormState extends State<MyInputForm> {
   }
 
   @override
-  Widget build(context) 
-  {
+  Widget build(context) {
     return SingleChildScrollView(
-    child: Column(children: <Widget>[
+        child: Column(children: <Widget>[
       Column(
         children: List.generate(controllers.length, (index) {
           return Column(
@@ -87,47 +85,52 @@ class _MyInputFormState extends State<MyInputForm> {
                       InputDecoration(hintText: 'Add reps info ${index + 1}'),
                 ),
                 if (addedList.contains(index))
-                const Icon(Icons.done, color: Colors.green)
+                  const Icon(Icons.done, color: Colors.green)
                 else
-                ElevatedButton(
-                    onPressed: () {
-                      int weightTemp = int.parse(controllers[index].text);
-                      Exercise tempExer = Exercise(
-                          name: widget.exercise.name,
-                          reps: index + 1,
-                          weight: weightTemp);
-                      exercises.add(tempExer);
-                      Records recorsTemp = Records(
-                          userId: userId,
-                          record: tempExer.toString(),
-                          weekName: getWeekDayString(),
-                          date: DateTime.now().toString());
-                      setState(() {
-                        addedList.add(index);  
-                      });
-                      
-                      debugPrint(recorsTemp.userId.toString());
-                      debugPrint(exercises.toString());
-                    },
-                    child: Text("Add for reps ${index + 1}")),
+                  ElevatedButton(
+                      onPressed: () {
+                        int weightTemp = int.parse(controllers[index].text);
+                        Exercise tempExer = Exercise(
+                            name: widget.exercise.name,
+                            reps: index + 1,
+                            weight: weightTemp);
+                        exercises.add(tempExer);
+                        Records recorsTemp = Records(
+                            userId: userId,
+                            record: tempExer.toString(),
+                            weekName: getWeekDayString(),
+                            date: DateTime.now().toString());
+                        setState(() {
+                          addedList.add(index);
+                        });
+
+                        debugPrint(recorsTemp.userId.toString());
+                        debugPrint(exercises.toString());
+                      },
+                      child: Text("Add for reps ${index + 1}")),
               ])
             ],
           );
         }),
       ),
       ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black
-          ),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
           onPressed: () {
             debugPrint(exerciseService.encodeExercises(exercises).toString());
-            userService.insertRecord(Records(userId: userId, record: exerciseService.encodeExercises(exercises), weekName: getWeekDayString(), date: DateTime.now().toString()));
+            userService.insertRecord(Records(
+                userId: userId,
+                record: exerciseService.encodeExercises(exercises),
+                weekName: getWeekDayString(),
+                date: DateTime.now().toString()));
             const snackBar = SnackBar(
-              content:  Text("Exercise added"),
+              content: Text("Exercise added"),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }, 
-          child: const Text("Add to database", style: TextStyle(color: Colors.white),))
+          },
+          child: const Text(
+            "Add to database",
+            style: TextStyle(color: Colors.white),
+          ))
     ]));
   }
 }
