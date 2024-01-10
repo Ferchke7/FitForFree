@@ -1,4 +1,3 @@
-import 'package:fitforfree/database/database_helper.dart';
 import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/exercise.dart';
@@ -72,9 +71,10 @@ class _MyInputFormState extends State<MyInputForm> {
   }
 
   @override
-  Widget build(context) //__
+  Widget build(context) 
   {
-    return Column(children: <Widget>[
+    return SingleChildScrollView(
+    child: Column(children: <Widget>[
       Column(
         children: List.generate(controllers.length, (index) {
           return Column(
@@ -87,7 +87,7 @@ class _MyInputFormState extends State<MyInputForm> {
                       InputDecoration(hintText: 'Add reps info ${index + 1}'),
                 ),
                 if (addedList.contains(index))
-                Icon(Icons.done, color: Colors.green)
+                const Icon(Icons.done, color: Colors.green)
                 else
                 ElevatedButton(
                     onPressed: () {
@@ -120,10 +120,14 @@ class _MyInputFormState extends State<MyInputForm> {
             backgroundColor: Colors.black
           ),
           onPressed: () {
-
-            //userService.insertRecord();
+            debugPrint(exerciseService.encodeExercises(exercises).toString());
+            userService.insertRecord(Records(userId: userId, record: exerciseService.encodeExercises(exercises), weekName: getWeekDayString(), date: DateTime.now().toString()));
+            const snackBar = SnackBar(
+              content:  Text("Exercise added"),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }, 
           child: const Text("Add to database", style: TextStyle(color: Colors.white),))
-    ]);
+    ]));
   }
 }

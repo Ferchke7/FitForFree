@@ -1,4 +1,5 @@
 import 'package:fitforfree/models/user.dart';
+import 'package:fitforfree/pages/show_all_data.dart';
 import 'package:fitforfree/pages/start_tday_routine.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
@@ -83,9 +84,9 @@ class _HomePageState extends State<HomerPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      
                       title: const Text("No routine"),
-                      content: Text("Add routine, or take a rest today :)"),
+                      content:
+                          const Text("Add routine, or take a rest today :)"),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
@@ -111,10 +112,8 @@ class _HomePageState extends State<HomerPage> {
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
             ),
-            onPressed: () {
-              debugPrint("tapped");
-            },
-            child: Text("Look your ${getWeekDayString()} routine history",
+            onPressed: () {},
+            child: Text("Look your ${getWeekDayString()} routine graph",
                 style: const TextStyle(color: Colors.white)));
       case 2:
         return TextButton(
@@ -122,7 +121,8 @@ class _HomePageState extends State<HomerPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              debugPrint("tapped");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ShowAllData()));
             },
             child: const Text("Look at your all routines history",
                 style: TextStyle(color: Colors.white)));
