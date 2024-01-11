@@ -24,6 +24,43 @@ class _NewsListState extends State<NewsList> {
     _postList = fetchPostList();
   }
 
+  String someConcat(String text) {
+    if (text.length > 30) {
+      return text.substring(0, 30);
+    } else
+      return text;
+  }
+  Future<void> deleteMyPost(int postId) async {
+  try {
+    final accessToken = client.auth.currentSession?.accessToken;
+    debugPrint(accessToken);
+    
+    if (accessToken == null) {
+      throw Exception('Access token is null.');
+    }
+
+    final response = await http.delete(
+      Uri.parse("http://192.227.152.231:3333/Blog/DeleteMyPost/deletePost?postId=$postId"),
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("Success");
+      
+    } else if (response.statusCode == 404) {
+      throw Exception("Post not found"); // Handle specific status codes
+    } else {
+      throw Exception("Failed to delete post. Status code: ${response.statusCode}");
+    }
+  } catch (e) {
+    debugPrint("Error deleting post: $e");
+    throw Exception("Failed to delete post");
+  }
+}
+
   Future<List<Post>> fetchPostList() async {
     try {
       final accessToken = client.auth.currentSession?.accessToken;
@@ -64,7 +101,9 @@ class _NewsListState extends State<NewsList> {
         future: _postList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LinearProgressIndicator();
+            return const LinearProgressIndicator(
+              color: Colors.orange,
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -86,31 +125,47 @@ class _NewsListState extends State<NewsList> {
                     );
                   },
                   child: Card(
+                    color: Colors.orange,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         ListTile(
-                          title: Text(postList[index].titleName),
+                          title: Text(
+                            postList[index].titleName,
+                            style: TextStyle(color: Colors.white),
+                          ),
                           subtitle: Text(
-                            'Created by: ${postList[index].author}\n\n${postList[index].description}...',
+                            'Created by: ${postList[index].author}\n\n${someConcat(postList[index].description)}...',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            // TextButton(
-                            //   child: Text("♥  ${postList[index].likes}"),
-                            //   onPressed: () {
-                            //     },
-
-                            // ),
                             const SizedBox(
-                              width: 3,
-                              height: 10,
+                              width: 30,
+                              height: 30,
                             ),
+                            postList[index].author == my_username
+                                ? IconButton(
+                                    onPressed: () async {
+                                      await deleteMyPost(postList[index].id);
+                                      setState(() {
+                                        _postList = fetchPostList();
+                                      });
+                                    },
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.white,
+                                  )
+                                : Container(),
                             TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white)),
                               child: Text(
-                                  "comments: ${postList[index].postsComments.length}"),
+                                "comments: ${postList[index].postsComments.length}",
+                                style: const TextStyle(color: Colors.orange),
+                              ),
                               onPressed: () {/* ... */},
                             ),
                             const SizedBox(
@@ -129,13 +184,15 @@ class _NewsListState extends State<NewsList> {
         },
       ),
       floatingActionButton: FloatingActionButton.small(
-        backgroundColor: const Color.fromARGB(255, 12, 47, 173),
+        backgroundColor: Colors.black,
         onPressed: () async {
           final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddPost()),
           );
-          if (result) {
+          if (result == null) {
+            setState(() {});
+          } else if (result) {
             setState(() {
               _postList = fetchPostList();
             });

@@ -3,7 +3,17 @@ import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/edit_routine.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
-List<String> daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+List<String> daysOfWeek = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+];
+
 class AddRecords extends StatefulWidget {
   const AddRecords({super.key});
 
@@ -14,7 +24,7 @@ class AddRecords extends StatefulWidget {
 class _AddRecordsState extends State<AddRecords> {
   UserService userService = UserService();
   late User currentUser;
-  
+
   @override
   void initState() {
     super.initState();
@@ -29,53 +39,39 @@ class _AddRecordsState extends State<AddRecords> {
     });
   }
 
- 
   @override
   Widget build(BuildContext context) {
-    //ExerciseService exerciseService = ExerciseService();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("The routine"),
+        title: const Text("Routines", style: TextStyle(color: Colors.white, backgroundColor: Colors.indigo),),
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: daysOfWeek.length,
-        itemBuilder: (context, index) {
-          String day = daysOfWeek[index];
-          return Card(
-            
-            child: ListTile(
-              title: Text(day),
-              onTap: () async {
-                  // List<Exercise> initialExercises = [
-                  //   Exercise(name: 'dsdsd', reps: 3, weight: 14),
-                  //   Exercise(name: 'squats', reps: 5, weight: 12),
-                  //   Exercise(name: 'bench', reps: 5, weight: 12),
-                    
-                  //   Exercise(name: '44', reps: 5, weight: 12),
-                  // ];
-                  // String jsonString = exerciseService.encodeExercises(initialExercises);
-                  // currentUser.monday = jsonString;
-                  // await userService.updateUser(currentUser);
-                Navigator.push(context,
-                 MaterialPageRoute(builder: (context) => EditRoutine(day: day,)
-                 )
-                 );
-              },
-            ),
-            
-          );
-        })
-
-      ,
-      floatingActionButton: 
-      FloatingActionButton.small(
-        backgroundColor: const Color.fromARGB(255, 24, 6, 97),
-        onPressed: () {
-          
-          
-      },
-        child: const Icon(Icons.sync,color: Colors.white,) ),
+          itemCount: daysOfWeek.length,
+          itemBuilder: (context, index) {
+            String day = daysOfWeek[index];
+            return Card(
+              child: ListTile(
+                title: Text("Day of: ${daysOfWeek[index]}\nPress for details", style: TextStyle(color: Colors.indigo),),
+                trailing: const Icon(Icons.wysiwyg_sharp, color: Colors.indigo,),
+                onTap: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditRoutine(
+                                day: day,
+                              )));
+                },
+              ),
+            );
+          }),
+      floatingActionButton: FloatingActionButton.small(
+          backgroundColor: Colors.indigo,
+          onPressed: () {},
+          child: const Icon(
+            Icons.sync,
+            color: Colors.white,
+          )),
     );
   }
 }

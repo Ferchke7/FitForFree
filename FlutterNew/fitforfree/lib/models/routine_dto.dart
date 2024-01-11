@@ -2,27 +2,27 @@ class RoutineDTO {
   int? id;
   String routineName;
   String routineDescription;
-  String monday;
-  String tuesday;
-  String wednesday;
-  String thursday;
-  String friday;
-  String saturday;
-  String sunday;
-  String user;
+  String? monday;
+  String? tuesday;
+  String? wednesday;
+  String? thursday;
+  String? friday;
+  String? saturday;
+  String? sunday;
+  String? user;
 
   RoutineDTO({
     this.id,
     required this.routineName,
     required this.routineDescription,
-    required this.monday,
-    required this.tuesday,
-    required this.wednesday,
-    required this.thursday,
-    required this.friday,
-    required this.saturday,
-    required this.sunday,
-    required this.user,
+    this.monday,
+    this.tuesday,
+    this.wednesday,
+    this.thursday,
+    this.friday,
+    this.saturday,
+    this.sunday,
+    this.user,
   });
 
   factory RoutineDTO.fromJson(Map<String, dynamic> json) {

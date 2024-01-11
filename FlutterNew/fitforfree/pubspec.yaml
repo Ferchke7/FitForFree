@@ -49,7 +49,8 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   searchable_listview: ^2.10.0
   signalr_netcore: ^0.1.7+2-nullsafety.3
-  syncfusion_flutter_charts: ^24.1.45
+  tiny_charts: ^0.1.0
+  
   
   
 

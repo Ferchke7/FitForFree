@@ -222,7 +222,6 @@ class _TodayRoutineState extends State<TodayRoutine> {
             if (snapshot.connectionState == ConnectionState.done) {
               return Column(
                 children: <Widget>[
-                  const Text("Some"),
                   Column(
                     children: List.generate(exerlist!.length, (index) {
                       return Accordion(
@@ -267,7 +266,6 @@ class _TodayRoutineState extends State<TodayRoutine> {
                           ]);
                     }),
                   ),
-                  
                 ],
               );
             } else {

@@ -1,6 +1,7 @@
 import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/show_all_data.dart';
 import 'package:fitforfree/pages/start_tday_routine.dart';
+import 'package:fitforfree/pages/weekday_graph.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -112,7 +113,9 @@ class _HomePageState extends State<HomerPage> {
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => WeekDayGraph()));
+            },
             child: Text("Look your ${getWeekDayString()} routine graph",
                 style: const TextStyle(color: Colors.white)));
       case 2:

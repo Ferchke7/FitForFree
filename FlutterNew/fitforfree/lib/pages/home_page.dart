@@ -2,6 +2,7 @@ import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/homer.dart';
 import 'package:fitforfree/pages/records_page.dart';
+import 'package:fitforfree/pages/share_routine.dart';
 import 'package:fitforfree/services/new_list.dart';
 import 'package:fitforfree/services/user_api.dart';
 import 'package:fitforfree/utils/common.dart';
@@ -16,9 +17,32 @@ class HomePage extends StatelessWidget {
     //String emailTemp = email.toString();
     _initUser();
     client.auth.currentSession?.accessToken;
+    weekDay = getWeekDayString();
     return const BottomMainNavigator();
   }
 }
+
+String getWeekDayString() {
+    DateTime now = DateTime.now();
+    switch (now.weekday) {
+      case 1:
+        return 'Monday';
+      case 2:
+        return 'Tuesday';
+      case 3:
+        return 'Wednesday';
+      case 4:
+        return 'Thursday';
+      case 5:
+        return 'Friday';
+      case 6:
+        return 'Saturday';
+      case 7:
+        return 'Sunday';
+      default:
+        return 'Unknown';
+    }
+  }
 
 void _initUser() async {
   String? email = client.auth.currentUser?.email;
@@ -65,17 +89,12 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
 
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomerPage(),
     //Text("TEMP"),
     AddRecords(),
     NewsList(),
-    Text(
-      'Construction 🚧',
-      style: optionStyle,
-    ),
+    ShareRoutinePage(),
     
   ];
 
@@ -157,7 +176,7 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: _selectedIndex % 2 == 0 ? Colors.amber[800] : Colors.white,
         onTap: _onItemTapped,
       ),
       drawer: Drawer(
