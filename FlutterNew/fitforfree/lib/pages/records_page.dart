@@ -42,10 +42,7 @@ class _AddRecordsState extends State<AddRecords> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Routines", style: TextStyle(color: Colors.white, backgroundColor: Colors.indigo),),
-        centerTitle: true,
-      ),
+      
       body: ListView.builder(
           itemCount: daysOfWeek.length,
           itemBuilder: (context, index) {

@@ -154,10 +154,7 @@ class _HomePageState extends State<HomerPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Routine Menu"),
-        centerTitle: true,
-      ),
+      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

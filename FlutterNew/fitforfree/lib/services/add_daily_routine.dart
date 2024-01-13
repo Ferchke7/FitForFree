@@ -5,7 +5,7 @@ import 'package:fitforfree/models/records.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
-class MyInputForm extends StatefulWidget //__
+class MyInputForm extends StatefulWidget 
 {
   final Exercise exercise;
 
@@ -71,10 +71,11 @@ class _MyInputFormState extends State<MyInputForm> {
 
   @override
   Widget build(context) {
-    return SingleChildScrollView(
-        child: Column(children: <Widget>[
-      Column(
+    return Column(children: <Widget>[
+      SingleChildScrollView(
+        child: Column(
         children: List.generate(controllers.length, (index) {
+          
           return Column(
             children: <Widget>[
               Column(children: <Widget>[
@@ -111,7 +112,7 @@ class _MyInputFormState extends State<MyInputForm> {
               ])
             ],
           );
-        }),
+        }),)
       ),
       ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
@@ -131,6 +132,6 @@ class _MyInputFormState extends State<MyInputForm> {
             "Add to database",
             style: TextStyle(color: Colors.white),
           ))
-    ]));
+    ]);
   }
 }

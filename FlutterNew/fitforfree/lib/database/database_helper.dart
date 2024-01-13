@@ -15,7 +15,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'dbder.db'); //fvf.db
+    String path = join(await getDatabasesPath(), 'localdatabase.db'); //fvf.db
     return await openDatabase(
       path,
       version: 1,

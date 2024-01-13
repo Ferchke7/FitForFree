@@ -26,8 +26,7 @@ class _AddPostState extends State<AddPost> {
   Future<void> postData() async {
     final accessToken = client.auth.currentSession?.accessToken;
     const String apiUrl =
-        'http://192.227.152.231:3333/Blog/CreatePost'; // Replace with your actual base URL
-
+        'http://192.227.152.231:3333/Blog/CreatePost'; 
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -41,10 +40,9 @@ class _AddPostState extends State<AddPost> {
     );
 
     if (response.statusCode == 200) {
-      // Request was successful, you can handle the response here
       debugPrint('Post Successful!');
     } else {
-      // Request failed, handle the error
+
       debugPrint('Failed to post data. Error: ${response.statusCode}');
     }
   }

@@ -142,12 +142,12 @@ class _ReadPostState extends State<ReadPost> {
                             debugPrint("Comment Tapped");
                           },
                           child: Container(
-                            height: 30.0,
-                            width: 20.0,
+                            height: 10.0,
+                            width: 10.0,
                             decoration: const BoxDecoration(
                                 color: Colors.blue,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50))),
+                                    BorderRadius.all(Radius.circular(10))),
                           ),
                         ),
                         title: Text(
@@ -157,7 +157,7 @@ class _ReadPostState extends State<ReadPost> {
                         subtitle: Text(post.postsComments[index]['comment']),
                         trailing: Text(
                           changeDate(post.postsComments[index]['updateDate']),
-                          style: const TextStyle(fontSize: 10),
+                          style: const TextStyle(fontSize: 8),
                         ),
                       ),
                     ),
@@ -180,7 +180,7 @@ class _ReadPostState extends State<ReadPost> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: _isPosted
                       ? null
@@ -194,7 +194,12 @@ class _ReadPostState extends State<ReadPost> {
                           });
                         },
                   child: _isPosted
-                      ? const CircularProgressIndicator()
+                      ? 
+                      const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
                       : const Icon(Icons.send),
                 ),
               ],

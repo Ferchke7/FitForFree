@@ -33,6 +33,9 @@ class _ShareRoutinePageState extends State<ShareRoutinePage> {
     routineDescription.dispose();
   }
 
+  // Future<void> deleteCard(int postId) {
+    
+  // }
   Future<void> postData(RoutineDTO routineDTO) async {
   final accessToken = client.auth.currentSession?.accessToken;
   const String apiUrl =
@@ -87,10 +90,7 @@ class _ShareRoutinePageState extends State<ShareRoutinePage> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(
-      title: const Text("Shared Routines"),
-      centerTitle: true,
-    ),
+    
     body: Column(
       children: <Widget>[
         Expanded( 
@@ -98,7 +98,7 @@ Widget build(BuildContext context) {
             future: routinesBack,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const LinearProgressIndicator();
+                return Container();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -121,9 +121,11 @@ Widget build(BuildContext context) {
                           children: <Widget>[
 
                             ListTile(
-                              title: Text(routinesTemp[index].routineName),
+                              title: Text(routinesTemp[index].routineName, 
+                              style: const TextStyle(color: Colors.indigo,)),
                               subtitle: Text(
                                 'Created by: ${routinesTemp[index].user}\n\n${routinesTemp[index].routineDescription}...',
+                                style: const TextStyle(color: Colors.indigo),
                               ),
                             ),
                             Row(
@@ -141,8 +143,9 @@ Widget build(BuildContext context) {
                                   style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
                                   child: const Text("donwload", style: TextStyle(color: Colors.white),),
                                   onPressed: () {
-                                    // Navigator.push(context,
-                                    //  MaterialPageRoute(builder: (context) => DownloadRoutine(routineDto : routinesTemp[index])));
+                                    Navigator.push(context,
+                                     MaterialPageRoute(builder: (context) => RoutineDonwload(routineDTO: routinesTemp[index],)
+                                     ));
                                   },
                                 ),
                                 const SizedBox(
@@ -172,21 +175,33 @@ Widget build(BuildContext context) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Share your routine\nYour current routine will be shared'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Text('Share your routine\nYour current routine will be shared'),
+            ),
             const Divider(),
-            const Text("Name of Routine"),
-            SizedBox(
-              width: 250,
-              child: TextFormField(
-              controller: routineName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                labelText: "Name of Routine"
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: const Text("Name of Routine"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 250,
+                child: TextFormField(
+                controller: routineName,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  labelText: "Name of Routine"
+                ),
+              ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: const Text("Description of routine"),
             ),
-            const Text("Description of routine"),
             SizedBox(
               width: 300,
               child: TextField(
@@ -220,6 +235,8 @@ Widget build(BuildContext context) {
                 user: my_username!);
               
               debugPrint(routineDTO.tuesday.toString());
+              routineDescription.clear();
+              routineName.clear();
               await postData(routineDTO);
               
               setState(() {
@@ -228,10 +245,10 @@ Widget build(BuildContext context) {
                 
               });
               
-            }, child: const Text("Share routine ")),
+            }, child: const Text("Share ")),
             ElevatedButton(onPressed: () {
               Navigator.pop(context);
-            }, child: const Text("Cancel "))
+            }, child: const Text("Cancel"))
           ],
         ),
       ))

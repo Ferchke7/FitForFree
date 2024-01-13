@@ -17,7 +17,7 @@ class NewsList extends StatefulWidget {
 
 class _NewsListState extends State<NewsList> {
   late Future<List<Post>> _postList;
-
+  
   @override
   void initState() {
     super.initState();
@@ -27,8 +27,9 @@ class _NewsListState extends State<NewsList> {
   String someConcat(String text) {
     if (text.length > 30) {
       return text.substring(0, 30);
-    } else
+    } else {
       return text;
+    }
   }
   Future<void> deleteMyPost(int postId) async {
   try {
@@ -93,10 +94,7 @@ class _NewsListState extends State<NewsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Forum')),
-        shadowColor: Colors.black,
-      ),
+      
       body: FutureBuilder<List<Post>>(
         future: _postList,
         builder: (context, snapshot) {
@@ -132,11 +130,11 @@ class _NewsListState extends State<NewsList> {
                         ListTile(
                           title: Text(
                             postList[index].titleName,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           subtitle: Text(
                             'Created by: ${postList[index].author}\n\n${someConcat(postList[index].description)}...',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
                         Row(
@@ -154,7 +152,7 @@ class _NewsListState extends State<NewsList> {
                                         _postList = fetchPostList();
                                       });
                                     },
-                                    icon: Icon(Icons.delete),
+                                    icon: const Icon(Icons.delete),
                                     color: Colors.white,
                                   )
                                 : Container(),
