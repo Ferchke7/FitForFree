@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fitforfree/models/news.dart';
 import 'package:fitforfree/models/user.dart';
 import 'package:fitforfree/pages/show_all_data.dart';
 import 'package:fitforfree/pages/start_tday_routine.dart';
@@ -14,6 +19,48 @@ class HomerPage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomerPage> {
+  late NewsResponse newsResponse = NewsResponse(articles: []);
+
+  @override
+  void initState() {
+    super.initState();
+    getNewsResponsesTemp().then((value) {
+      setState(() {
+        newsResponse = value;
+      });
+    });
+  }
+
+  Future<void> getNewsResponses() async {
+    final response = await http.get(Uri.parse(
+        "https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=6b470d0680cd413e9c119bf0d4960478"));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonMap = json.decode(response.body);
+      setState(() {
+        newsResponse = NewsResponse.fromJson(jsonMap);
+      });
+    } else {
+      throw Exception('Failed to load news data');
+    }
+  }
+
+  Future<NewsResponse> getNewsResponsesTemp() async {
+    final response = await http.get(Uri.parse(
+        "https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=6b470d0680cd413e9c119bf0d4960478"));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonMap = json.decode(response.body);
+
+      // Handle null values in the JSON map during initialization
+      final sanitizedJsonMap = Map<String, dynamic>.from(jsonMap)
+        ..removeWhere((key, value) => value == null);
+
+      return NewsResponse.fromJson(sanitizedJsonMap);
+    } else {
+      throw Exception('Failed to load news data');
+    }
+  }
+
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
 
   Future<bool> ifExerciseIsEmpty(String dayOfWeek) async {
@@ -114,7 +161,8 @@ class _HomePageState extends State<HomerPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => WeekDayGraph()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WeekDayGraph()));
             },
             child: Text("Look your ${getWeekDayString()} routine graph",
                 style: const TextStyle(color: Colors.white)));
@@ -154,7 +202,6 @@ class _HomePageState extends State<HomerPage> {
     );
 
     return Scaffold(
-      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -181,22 +228,55 @@ class _HomePageState extends State<HomerPage> {
                     dotColor: Colors.black,
                     activeDotColor: Colors.orange),
               ),
-              const Card(
+              Card(
                 child: Column(
                   children: <Widget>[
-                    ListTile(
-                      tileColor: Colors.white,
-                      title: Text(
-                        "Hello, Welcome to Fit For Free",
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 400.0,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration: const Duration(seconds: 1),
                       ),
-                      subtitle: Text(
-                        "I welcome you in a free application.\n The Idea of this application share your routine, and be able to track your records, being able to connect with people with same ideas.\n Welcome again! With Regards!",
-                        style: TextStyle(fontSize: 25, color: Colors.black),
-                      ),
+                      items: [1, 2, 3, 4, 5].map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration:
+                                  const BoxDecoration(color: Colors.black),
+                              child: GestureDetector(
+                                onTap: () => {},
+                                child: Column(
+                                  children: <Widget>[
+                                    Image.network(
+                                      (newsResponse.articles.isNotEmpty)
+                                          ? newsResponse
+                                                  .articles[i].urlToImage ??
+                                              "https://res.cloudinary.com/practicaldev/image/fetch/s--wnl5nbWu--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/7kwc5kbz97o2ui9utneu.png"
+                                          : "https://res.cloudinary.com/practicaldev/image/fetch/s--wnl5nbWu--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/7kwc5kbz97o2ui9utneu.png",
+                                    ),
+                                    if (newsResponse.articles.isNotEmpty)
+                                      Text(
+                                        newsResponse.articles[i].title,
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 18),
+                                      ),
+                                    if (newsResponse.articles.isNotEmpty)
+                                      Text(
+                                        newsResponse.articles[i].description,
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
                     )
                   ],
                 ),

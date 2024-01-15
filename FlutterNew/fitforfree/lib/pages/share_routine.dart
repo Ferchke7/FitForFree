@@ -151,7 +151,7 @@ class _ShareRoutinePageState extends State<ShareRoutinePage> {
                                     routinesTemp[index].user == my_username
                                         ? IconButton(
                                             onPressed: () {
-                                              //TODO ADD HERE DELETE FUNC
+                                              
                                               deleteMyRoutine(routinesTemp[index].routineName);
                                               setState(() {
                                                 routinesBack = fetchRoutines();
@@ -206,15 +206,15 @@ class _ShareRoutinePageState extends State<ShareRoutinePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
                               'Share your routine\nYour current routine will be shared'),
                         ),
                         const Divider(),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: const Text("Name of Routine"),
+                        const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text("Name of Routine"),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -230,9 +230,9 @@ class _ShareRoutinePageState extends State<ShareRoutinePage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: const Text("Description of routine"),
+                        const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text("Description of routine"),
                         ),
                         SizedBox(
                           width: 300,
