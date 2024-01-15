@@ -101,7 +101,7 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
       case 0 :
       return "Routine Menu";
       case 1:
-      return "Your Records";
+      return "Your Routines";
       case 2:
       return "Forum Page";
       case 3:
