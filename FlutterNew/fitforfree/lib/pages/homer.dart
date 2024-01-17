@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,45 +20,32 @@ class HomerPage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomerPage> {
-  late NewsResponse newsResponse = NewsResponse(articles: []);
+  List<NewsArticle> newsArticles = [];
 
   @override
   void initState() {
     super.initState();
-    getNewsResponsesTemp().then((value) {
-      setState(() {
-        newsResponse = value;
-      });
-    });
+    fetchNewsArticles();
   }
 
-  Future<void> getNewsResponses() async {
-    final response = await http.get(Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=6b470d0680cd413e9c119bf0d4960478"));
+  Future<void> fetchNewsArticles() async {
+    final accessToken = client.auth.currentSession?.accessToken;
+    final response = await http.get(
+      Uri.parse('http://192.227.152.231:3333/News'),
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      },
+    );
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonMap = json.decode(response.body);
+      final List<dynamic> data = json.decode(response.body);
       setState(() {
-        newsResponse = NewsResponse.fromJson(jsonMap);
+        newsArticles =
+            data.map((article) => NewsArticle.fromJson(article)).toList();
       });
     } else {
-      throw Exception('Failed to load news data');
-    }
-  }
-
-  Future<NewsResponse> getNewsResponsesTemp() async {
-    final response = await http.get(Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=6b470d0680cd413e9c119bf0d4960478"));
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonMap = json.decode(response.body);
-
-      // Handle null values in the JSON map during initialization
-      final sanitizedJsonMap = Map<String, dynamic>.from(jsonMap)
-        ..removeWhere((key, value) => value == null);
-
-      return NewsResponse.fromJson(sanitizedJsonMap);
-    } else {
-      throw Exception('Failed to load news data');
+      throw Exception('Failed to load news articles');
     }
   }
 
@@ -233,12 +221,12 @@ class _HomePageState extends State<HomerPage> {
                   children: <Widget>[
                     CarouselSlider(
                       options: CarouselOptions(
-                        height: 400.0,
+                        height: 500.0,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
                         autoPlayAnimationDuration: const Duration(seconds: 1),
                       ),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: List.generate(newsArticles.length, (i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -252,21 +240,21 @@ class _HomePageState extends State<HomerPage> {
                                 child: Column(
                                   children: <Widget>[
                                     Image.network(
-                                      (newsResponse.articles.isNotEmpty)
-                                          ? newsResponse
-                                                  .articles[i].urlToImage ??
+                                      (newsArticles.isNotEmpty &&
+                                              i < newsArticles.length)
+                                          ? newsArticles[i].urlToImage ??
                                               "https://res.cloudinary.com/practicaldev/image/fetch/s--wnl5nbWu--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/7kwc5kbz97o2ui9utneu.png"
                                           : "https://res.cloudinary.com/practicaldev/image/fetch/s--wnl5nbWu--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/7kwc5kbz97o2ui9utneu.png",
                                     ),
-                                    if (newsResponse.articles.isNotEmpty)
+                                    //if (newsArticles[i].content.isNotEmpty)
+                                    Text(
+                                      newsArticles[i].content,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                    if (newsArticles[i].description.isNotEmpty)
                                       Text(
-                                        newsResponse.articles[i].title,
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                    if (newsResponse.articles.isNotEmpty)
-                                      Text(
-                                        newsResponse.articles[i].description,
+                                        newsArticles[i].description,
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 12),
                                       ),
