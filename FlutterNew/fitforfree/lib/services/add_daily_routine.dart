@@ -21,7 +21,7 @@ class _MyInputFormState extends State<MyInputForm> {
   List<int> addedList = [];
   ExerciseService exerciseService = ExerciseService();
   UserService userService = UserService();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -72,48 +72,58 @@ class _MyInputFormState extends State<MyInputForm> {
   @override
   Widget build(context) {
     return Column(children: <Widget>[
-      SingleChildScrollView(
-        child: Column(
+      
+        Column(
         children: List.generate(controllers.length, (index) {
           
-          return Column(
-            children: <Widget>[
-              Column(children: <Widget>[
-                TextField(
-                  controller: controllers[index],
-                  keyboardType: TextInputType.number,
-                  decoration:
-                      InputDecoration(hintText: 'Add reps info ${index + 1}'),
-                ),
-                if (addedList.contains(index))
-                  const Icon(Icons.done, color: Colors.green)
-                else
-                  ElevatedButton(
-                      onPressed: () {
-                        int weightTemp = int.parse(controllers[index].text);
-                        Exercise tempExer = Exercise(
-                            name: widget.exercise.name,
-                            reps: index + 1,
-                            weight: weightTemp);
-                        exercises.add(tempExer);
-                        Records recorsTemp = Records(
-                            userId: userId,
-                            record: tempExer.toString(),
-                            weekName: getWeekDayString(),
-                            date: DateTime.now().toString());
-                        setState(() {
-                          addedList.add(index);
-                        });
-
-                        debugPrint(recorsTemp.userId.toString());
-                        debugPrint(exercises.toString());
-                      },
-                      child: Text("Add for reps ${index + 1}")),
-              ])
-            ],
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Column(children: <Widget>[
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter information';
+                      }
+                      return null;
+                    },
+                    controller: controllers[index],
+                    keyboardType: TextInputType.number,
+                    decoration:
+                        InputDecoration(hintText: 'Add reps info ${index + 1}'),
+                  ),
+                  if (addedList.contains(index))
+                    const Icon(Icons.done, color: Colors.black)
+                  else
+                    ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                          int weightTemp = int.parse(controllers[index].text);
+                          Exercise tempExer = Exercise(
+                              name: widget.exercise.name,
+                              reps: index + 1,
+                              weight: weightTemp);
+                          exercises.add(tempExer);
+                          Records recorsTemp = Records(
+                              userId: userId,
+                              record: tempExer.toString(),
+                              weekName: getWeekDayString(),
+                              date: DateTime.now().toString());
+                          setState(() {
+                            addedList.add(index);
+                          });
+            
+                          debugPrint(recorsTemp.userId.toString());
+                          debugPrint(exercises.toString());
+                        }},
+                        child: Text("Add for reps ${index + 1}")),
+                ])
+              ],
+            ),
           );
         }),)
-      ),
+      ,
       ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
           onPressed: () {

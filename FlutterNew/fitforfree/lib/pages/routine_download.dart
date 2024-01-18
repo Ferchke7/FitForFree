@@ -3,6 +3,7 @@ import 'package:fitforfree/database/exercise_json_helper.dart';
 import 'package:fitforfree/database/sqlite_service.dart';
 import 'package:fitforfree/models/exercise.dart';
 import 'package:fitforfree/models/routine_dto.dart';
+import 'package:fitforfree/pages/downloaded_listtable.dart';
 import 'package:fitforfree/utils/common.dart';
 import 'package:flutter/material.dart';
 
@@ -18,13 +19,38 @@ class _RoutineDonwloadState extends State<RoutineDonwload> {
   UserService userService = UserService();
   ExerciseService exerciseService = ExerciseService();
   late List<Exercise> listExercise;
+  List<List<Exercise>> listOfExercises = [];
   @override
   void initState(){
     super.initState();
-    
+    populateExer();
   }
 
-  
+  void populateExer() {
+    if(widget.routineDTO.monday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.monday!));
+    }
+    if(widget.routineDTO.tuesday != null) {
+      
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.tuesday!));
+    }
+    
+    if(widget.routineDTO.wednesday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.wednesday!));
+    }
+    if(widget.routineDTO.thursday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.thursday!));
+    }
+    if(widget.routineDTO.friday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.friday!));
+    }
+    if(widget.routineDTO.saturday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.saturday!));
+    }
+    if(widget.routineDTO.sunday != null) {
+      listOfExercises.add(exerciseService.decodeExercises(widget.routineDTO.sunday!));
+    }    
+  }
 
 
   @override
@@ -40,11 +66,17 @@ class _RoutineDonwloadState extends State<RoutineDonwload> {
           child: Column(
             children: <Widget>[
               Card(
+                margin: const EdgeInsets.all(20),
                 child: Column(
+                  
                   children: <Widget>[
-                    Accordion(headerBorderWidth: 20, children: [
+                    SizedBox(
+                      width: 390,
+                      
+                      child: Accordion(headerBorderWidth: 10, children: [
                       AccordionSection(
                           contentVerticalPadding: 20,
+                          
                           header: Text(
                             "Routine creator: ${widget.routineDTO.user}\ndescription:\n${widget.routineDTO.routineDescription}",
                             style: const TextStyle(color: Colors.white),
@@ -52,45 +84,14 @@ class _RoutineDonwloadState extends State<RoutineDonwload> {
                           content: SingleChildScrollView(
                               child: Column(
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                      "Routine for monday: \n${widget.routineDTO.monday}"),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                      "Routine for tuesday: \n${widget.routineDTO.tuesday}"),
-                              ),
-                                   Padding(
-                                     padding: const EdgeInsets.all(8.0),
-                                     child: Text(
-                                      "Routine for wednesday: \n${widget.routineDTO.wednesday}"),
-                                   ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                      "Routine for thursday: \n${widget.routineDTO.thursday}"),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                      "Routine for friday: \n${widget.routineDTO.friday}"),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                      "Routine for saturday: \n${widget.routineDTO.saturday}"),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                      "Routine for sunday: \n${widget.routineDTO.sunday}"),
-                                    ),
-                                     
+                              DowloadedListTable(listOfExercises: listOfExercises,)
+                                   
                             ],
                           )))
-                    ])
+                    ]),
+                    ),
+
+                    
                   ],
                 ),
               ),
@@ -119,6 +120,7 @@ class _RoutineDonwloadState extends State<RoutineDonwload> {
                           Navigator.pop(context);
                         });
                       },
+                      
                       icon: const Icon(Icons.download),
                       label: const Text("Download and use this routine"))
                 ],

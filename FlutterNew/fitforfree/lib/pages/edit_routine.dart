@@ -18,6 +18,7 @@ class EditRoutine extends StatefulWidget {
 }
 
 class _EditRoutineState extends State<EditRoutine> {
+  final _formKey = GlobalKey<FormState>();
   late Future<List<Exercise>> exerlist;
 
   final TextEditingController _newExerController = TextEditingController();
@@ -165,6 +166,7 @@ class _EditRoutineState extends State<EditRoutine> {
   }
 
   String? validateInteger(String value) {
+    
     try {
       int.parse(value);
       return null;
@@ -195,6 +197,12 @@ class _EditRoutineState extends State<EditRoutine> {
                 TextFormField(
                   controller: _newExerController,
                   onChanged: (value) {},
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter some text";
+                    }
+                    return null;
+                  },
                   decoration: const InputDecoration(
                       hintText: "Put the name of Routine"),
                 ),
@@ -214,6 +222,7 @@ class _EditRoutineState extends State<EditRoutine> {
               textColor: Colors.white,
               child: const Text('Add'),
               onPressed: () async {
+                if (_formKey.currentState!.validate()) {
                 int? repsTemp = parseReps(_newRepsController.text);
 
                 List<Exercise> tempExercise = [
@@ -245,7 +254,7 @@ class _EditRoutineState extends State<EditRoutine> {
                 setState(() {
                   Navigator.pop(context);
                 });
-              },
+              }},
             ),
             MaterialButton(
               color: const Color.fromARGB(255, 0, 0, 0),

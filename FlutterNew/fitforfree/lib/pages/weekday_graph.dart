@@ -24,7 +24,7 @@ class _WeekDayGraphState extends State<WeekDayGraph> {
 
   Future<void> initRecords() async {
   try {
-    List<Records> result = await userService.getRecordsByUserIdAndWeekName(userId, weekDay!.toLowerCase());
+    List<Records> result = await userService.getRecordsByUserIdAndWeekName(userId, weekDay.toString());
     setState(() {
       records = result;
     });
@@ -38,11 +38,14 @@ class _WeekDayGraphState extends State<WeekDayGraph> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("BLA"),
+        title: Text("Your Graph"),
       ),
-      body: records.isEmpty 
-      ? Center(child: CircularProgressIndicator())
-      : Center(
+      body: 
+      // records.isEmpty 
+      // ? Center(child: 
+      // Text("You don't have enough data"))
+      // :
+       Center(
         child: TinyLineChart(
           width: 100,
           height: 28,

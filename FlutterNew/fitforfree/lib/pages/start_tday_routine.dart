@@ -215,59 +215,62 @@ class _TodayRoutineState extends State<TodayRoutine> {
         title: const Text("Your today routine"),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
+      body: 
+        FutureBuilder(
           future: initExerList(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text("Error occurred with the database");
+            }
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                children: <Widget>[
-                  Column(
-                    children: List.generate(exerlist!.length, (index) {
-                      return Accordion(
-                          headerBorderColor: Colors.blueGrey,
-                          headerBorderColorOpened: Colors.transparent,
-                          headerBorderWidth: 1,
-                          headerBackgroundColorOpened: Colors.green,
-                          contentBackgroundColor: Colors.white,
-                          contentBorderColor: Colors.green,
-                          contentBorderWidth: 3,
-                          contentHorizontalPadding: 100,
-                          scaleWhenAnimating: true,
-                          openAndCloseAnimation: true,
-                          headerPadding: const EdgeInsets.symmetric(
-                              vertical: 3, horizontal: 20),
-                          sectionOpeningHapticFeedback:
-                              SectionHapticFeedback.heavy,
-                          sectionClosingHapticFeedback:
-                              SectionHapticFeedback.light,
-                          children: [
-                            AccordionSection(
-                                isOpen: false,
-                                contentVerticalPadding: 1,
-                                leftIcon: const Icon(
-                                  Icons.sports_gymnastics,
-                                ),
-                                headerBackgroundColor: (Colors.black),
-                                header: Text(
-                                  exerlist![index].name.toString(),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                content: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: MyInputForm(
-                                    exercise: exerlist![index],
+              return ListView.builder(
+                itemCount: exerlist!.length,
+                itemBuilder: (context, index) {
+                      return SizedBox(
+                        width: 200,
+                        child: Accordion(
+                            headerBorderColor: Colors.blueGrey,
+                            headerBorderColorOpened: Colors.transparent,
+                            headerBorderWidth: 1,
+                            headerBackgroundColorOpened: Colors.green,
+                            contentBackgroundColor: Colors.white,
+                            contentBorderColor: Colors.green,
+                            contentBorderWidth: 3,
+                            contentHorizontalPadding: 100,
+                            scaleWhenAnimating: true,
+                            openAndCloseAnimation: true,
+                            headerPadding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 20),
+                            sectionOpeningHapticFeedback:
+                                SectionHapticFeedback.heavy,
+                            sectionClosingHapticFeedback:
+                                SectionHapticFeedback.light,
+                            children: [
+                              AccordionSection(
+                                  isOpen: false,
+                                  contentVerticalPadding: 1,
+                                  leftIcon: const Icon(
+                                    Icons.sports_gymnastics,
                                   ),
-                                ))
-                          ]);
-                    }),
-                  ),
-                ],
-              );
+                                  headerBackgroundColor: (Colors.black),
+                                  header: Text(
+                                    exerlist![index].name.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  content: SizedBox(
+                                      child: MyInputForm(
+                                        exercise: exerlist![index],
+                                      ),
+                                    
+                                  ))
+                            ]),
+                      );
+                    }
+                  );
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -275,7 +278,6 @@ class _TodayRoutineState extends State<TodayRoutine> {
             }
           },
         ),
-      ),
-    );
+      );
   }
 }
