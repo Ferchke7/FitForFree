@@ -177,7 +177,13 @@ class _BottomMainNavigatorState extends State<BottomMainNavigator> {
                   style: ElevatedButton.styleFrom(
                     shape: const StadiumBorder(),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    final snackBar = SnackBar(content: const Text("Sorry this part is in under development")
+                    ,action: SnackBarAction(label: "Understand",
+                     onPressed: () {}),);
+                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  
                   icon: const Icon(Icons.chat),
                   label: const Text("Live Chatting")),
               Expanded(

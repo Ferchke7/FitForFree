@@ -11,6 +11,26 @@ class DowloadedListTable extends StatefulWidget
   State<DowloadedListTable> createState() => _DowloadedListTableState();
 }
 class _DowloadedListTableState extends State<DowloadedListTable> {
+  String weekDay (int index) {
+    switch(index) {
+      case 0 :
+      return "Monday";
+      case 1 :
+      return "Tuesday";
+      case 2 :
+      return "Wednesday";
+      case 3 :
+      return "Thursday";
+      case 4 :
+      return "Friday";
+      case 5 :
+      return "Saturday";
+      case 6 :
+      return "Sunday";
+      
+    }
+    return "Nothing";
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -27,6 +47,7 @@ class _DowloadedListTableState extends State<DowloadedListTable> {
                 columns: const [
                   DataColumn(label: Text('Reps'), numeric: true),
                   DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Weekday'))
                 ],
                 rows: widget.listOfExercises[index].map((exercise) {
                   return DataRow(
@@ -36,6 +57,7 @@ class _DowloadedListTableState extends State<DowloadedListTable> {
                         textAlign: TextAlign.right,
                       )),
                       DataCell(Text(exercise.name)),
+                      DataCell(Text(weekDay(index)))
                     ],
                   );
                 }).toList(),

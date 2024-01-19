@@ -65,7 +65,7 @@ class _ShowAllDataState extends State<ShowAllData> {
                 itemBuilder: (BuildContext context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text("Day of saved record: ${listOfRecords[index].date.substring(0,10)}\nWeek: ${listOfRecords[index].weekName}"),
+                      title: Text("Day of saved record: ${listOfRecords[index].date.substring(0,10)}\nWeekday: ${listOfRecords[index].weekName}"),
                       onTap: () {
                         String recordsTemp = listOfRecords[index].record;
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>  ShowWeekList(recordsTemp: recordsTemp,)));
