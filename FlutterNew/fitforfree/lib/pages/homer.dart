@@ -223,7 +223,7 @@ class _HomePageState extends State<HomerPage> {
                       options: CarouselOptions(
                         height: 500.0,
                         autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayInterval: const Duration(seconds: 1),
                         autoPlayAnimationDuration: const Duration(seconds: 1),
                       ),
                       items: List.generate(newsArticles.length, (i) {
